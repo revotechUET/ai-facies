@@ -220,8 +220,10 @@ def associated_facies(data, iter):
     for row in reversed(data):
         groups = pick_group(divide_group(find_max_radius_30(row["Unit_index"], simplified_data)))
         tmp = []
+        for item in groups:
+            tmp.append(item["name"])
         if len(groups) > 0:
             row.update(update_row(row, groups))
-            row.update({"Facies_group": groups})
+            row.update({"Facies_group": tmp})
 
     utils_func.export_to_csv(data, f"csv/associated_facies{iter}.csv")
