@@ -201,10 +201,10 @@ def get_key(lst, i):
 
 
 def calculate_uncertainty(row):
-    if row["Most"] == "unknown" or not row["Most"]:
+    if "/" in row["Most"] or not row["Most"]:
         return 1
 
-    if row["Second_Most"] and row["Second_Most"] != "unknown" and float(row[row["Most"]]) - float(
+    if row["Second_Most"] and "/" not in row["Second_Most"] and float(row[row["Most"]]) - float(
             row[row["Second_Most"]]) < 0.1:
         return 1
 
@@ -212,6 +212,29 @@ def calculate_uncertainty(row):
         return 1
 
     return 0
+
+
+def update_name(lst):
+    i = 0
+    names = []
+
+    while i < len(lst):
+        tmp = 0
+        res = ""
+        while i + tmp < len(lst) - 1 and lst[i + tmp]["point"] == lst[i + tmp + 1]["point"]:
+            tmp += 1
+        for j in range(i, i + tmp + 1):
+            res += lst[j]["name"]
+            if j < i + tmp:
+                res += "/"
+            prob = lst[j]["point"]
+        if tmp == 0:
+            names.append({"curve": lst[i]["name"], "prob": prob})
+        else:
+            for t in range(tmp + 1):
+                names.append({"curve": res, "prob": prob})
+        i += tmp + 1
+    return names
 
 
 def convert_data(data):
@@ -233,29 +256,24 @@ def convert_data(data):
         lst = []
         for key, value in CODE_TO_NAME.items():
             if float(row[value]) != 0:
-                lst.append({value: float(row[value])})
-        lst = sorted(lst, key=lambda it: it[[key for key in it.keys()][0]], reverse=True)
-        for i in range(len(lst) - 1):
-            if lst[i][get_key(lst, i)] == lst[i + 1][get_key(lst, i + 1)]:
-                lst[i][get_key(lst, i)] = "unknown"
-                lst[i + 1][get_key(lst, i + 1)] = "unknown"
+                lst.append({"name": value, "point": float(row[value])})
+        lst = sorted(lst, key=lambda it: it["point"], reverse=True)
+        lst = update_name(lst)
 
         for i in range(len(curve)):
             if len(lst) > i:
-                name = [key for key in lst[i].keys()][0]
-                if row["Special_lithology"] != UNDEFINED:
-                    row.update({curve[i]: ""})
-                    row.update({prob[i]: ""})
-
+                if len(row["Special_lithology"]) > 0:
+                    row.update({
+                        curve[i]: "",
+                        prob[i]: ""
+                    })
                 else:
-                    row.update({curve[i]: name})
-                    row.update({prob[i]: row[name]})
+                    row.update({curve[i]: lst[i]["curve"], prob[i]: lst[i]["prob"]})
             else:
-                row.update({curve[i]: ""})
-                row.update({prob[i]: ""})
-
-            if i == 2:
-                break
+                row.update({
+                    curve[i]: "",
+                    prob[i]: ""
+                })
 
     for row in data:
         row.update({"Uncertainty_flag": calculate_uncertainty(row)})

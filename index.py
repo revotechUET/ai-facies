@@ -45,11 +45,11 @@ def main():
     modifier_set2(data)
     end = time.time()
     print(f"modifier_set2 execution time: {round(end - start, 2)}s\n")
-    #
-    # start = time.time()
-    # utils_func.convert_data(data)
-    # end = time.time()
-    # print(f"convert_data execution time: {round(end - start, 2)}s\n")
+
+    start = time.time()
+    utils_func.convert_data(data)
+    end = time.time()
+    print(f"convert_data execution time: {round(end - start, 2)}s\n")
 
     start = time.time()
     utils_func.export_to_csv(data, "csv/final.csv")
