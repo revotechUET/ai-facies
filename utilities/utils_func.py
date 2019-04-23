@@ -278,7 +278,7 @@ def convert_data(data):
     for row in data:
         row.update({"Uncertainty_flag": calculate_uncertainty(row)})
 
-    convert_name_to_number(data)
+    # convert_name_to_number(data)
 
 
 def export_to_csv(data, filename):
