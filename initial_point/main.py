@@ -40,4 +40,3 @@ def init_point(data):
             "Distal_Marine_Turbidites": initpoint.init_distal_marine_turbidites(row),
             "Marine_Deepwater": initpoint.init_marine_deepwater(row)
         })
-    return data

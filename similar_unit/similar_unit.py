@@ -41,3 +41,4 @@ def similar_unit(data):
                 if name:
                     new_point = handle_point(data[i][name], "50-100")
                     data[i].update({name: new_point})
+    utils_func.export_to_csv(data, f"csv/similar_unit.csv")

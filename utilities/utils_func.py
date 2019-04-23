@@ -352,7 +352,11 @@ def simplify_data(data):
             row.update({"Lateral_proximity": lateral})
 
             simplified_data.append(deepcopy(row))
+
             core_depofacies.clear()
             special_lithologies.clear()
+            biostrats.clear()
+            laterals.clear()
+            reliabilities.clear()
 
     return simplified_data

@@ -2,7 +2,7 @@ from utilities import utils_func
 
 
 def add_point_volcanics(row):
-    return row
+    return
 
 
 def add_point_marine_non_clastic(row):
@@ -39,12 +39,16 @@ def updateRow(row, litho_code):
 
 def find_adjacent_unit_special_lithology(unit_index, data):
     unit_index = int(unit_index)
-    lithologies = data[unit_index]["Special_lithology"]
+    lst = []
+
+    current = data[unit_index]["Special_lithology"]
     before = data[unit_index - 1 if unit_index > 0 else 0]["Special_lithology"]
     after = data[unit_index + 1 if unit_index < len(data) - 1 else len(data) - 1]["Special_lithology"]
-    lithologies.extend(before)
-    lithologies.extend(after)
-    return utils_func.remove_duplicate(lithologies)
+
+    lst.extend(current)
+    lst.extend(before)
+    lst.extend(after)
+    return utils_func.remove_duplicate(lst)
 
 
 def special_lithology(data):
