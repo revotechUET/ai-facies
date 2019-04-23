@@ -22,6 +22,11 @@ def main():
     print(f"init_point execution time: {round(end - start, 2)}s\n")
 
     start = time.time()
+    data = utils_func.simplify_data(data)
+    end = time.time()
+    print(f"simplify_data execution time: {round(end - start, 2)}s\n")
+
+    start = time.time()
     similar_unit(data)
     end = time.time()
     print(f"similar_unit execution time: {round(end - start, 2)}s\n")
@@ -40,11 +45,11 @@ def main():
     modifier_set2(data)
     end = time.time()
     print(f"modifier_set2 execution time: {round(end - start, 2)}s\n")
-
-    start = time.time()
-    utils_func.convert_data(data)
-    end = time.time()
-    print(f"convert_data execution time: {round(end - start, 2)}s\n")
+    #
+    # start = time.time()
+    # utils_func.convert_data(data)
+    # end = time.time()
+    # print(f"convert_data execution time: {round(end - start, 2)}s\n")
 
     start = time.time()
     utils_func.export_to_csv(data, "csv/final.csv")

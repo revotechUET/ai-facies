@@ -1,5 +1,4 @@
 from utilities import utils_func
-from copy import deepcopy
 
 
 def find_max_curve(row):
@@ -84,33 +83,14 @@ def update_row(row, group):
         points = [["x", -3], ["x", "x"], ["x", "x"], [-1, 1], [1, 1], [2, 2]]
 
     for i in range(len(points)):
-        row.update(utils_func.update_row_group(utils_func.GROUPS[i], row, points[i][sharp_boundary]))
-
-    return row
-
-
-def simplify_data(data):
-    lst = []
-    lithos = []
-
-    for i in range(len(data)):
-        if data[i]["Special_lithology"] != "-9999":
-            lithos.append(int(data[i]["Special_lithology"]))
-        if data[i]["Boundary_flag"] == "1":
-            final_lithologies = deepcopy(utils_func.remove_duplicate(lithos))
-            data[i].update({"Special_lithology": final_lithologies})
-            lst.append(data[i])
-            lithos.clear()
-
-    return lst
+        utils_func.update_row_group(utils_func.GROUPS[i], row, points[i][sharp_boundary])
 
 
 def lower_boundary(data, iter):
-    simplified_data = simplify_data(deepcopy(data))
     for row in reversed(data):
-        group = pick_group(divide_group(find_max_lower(row["Unit_index"], simplified_data)))
+        group = pick_group(divide_group(find_max_lower(row["Unit_index"], data)))
         if group:
-            row.update(update_row(row, group))
+            update_row(row, group)
             row.update({"Facies_below": group["name"] if group else None})
 
     utils_func.export_to_csv(data, f"csv/lower_boundary{iter}.csv")

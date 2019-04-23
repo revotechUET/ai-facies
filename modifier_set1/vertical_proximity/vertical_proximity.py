@@ -1,6 +1,7 @@
 from modifier_set1.vertical_proximity import update_point
 from utilities import utils_func
 
+
 def vertical_proximity(data):
     for row in data:
         row.update({

@@ -11,6 +11,8 @@ def get_idx(number_of_similar_unit):
         return 2
     elif number_of_similar_unit > 5:
         return 3
+    else:
+        raise Exception("Number_of_similar_units cannot < 0")
 
 
 def update_alluvial_fan(data_set):

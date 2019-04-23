@@ -96,6 +96,8 @@ GROUPS = [
     "Deep_Marine"
 ]
 
+UNDEFINED = "-9999"
+
 
 def convert_name_to_number(data):
     tmp = deepcopy(CODE_TO_NAME)
@@ -166,7 +168,6 @@ def update_row_group(group_name, row, point):
                 row.update({name: 0})
             else:
                 row.update({name: handle_addition(int(row[name]) + point)})
-    return row
 
 
 def convert_unit_by_unit(data):
@@ -174,9 +175,9 @@ def convert_unit_by_unit(data):
     lithos = []
     depos = []
     for i in range(0, len(data)):
-        if data[i]["Special_lithology"] != "-9999":
+        if data[i]["Special_lithology"] != UNDEFINED:
             lithos.append(float(data[i]["Special_lithology"]))
-        if data[i]["Core_depofacies"] != "-9999":
+        if data[i]["Core_depofacies"] != UNDEFINED:
             depos.append((float(data[i]["Core_depofacies"])))
         if data[i]["Boundary_flag"] == "1":
             final_litho = deepcopy(remove_duplicate(lithos))
@@ -242,20 +243,16 @@ def convert_data(data):
         for i in range(len(curve)):
             if len(lst) > i:
                 name = [key for key in lst[i].keys()][0]
-                if row["Special_lithology"] != "-9999":
-                    row.update({curve[i]: "unknown"})
-                    row.update({prob[i]: 0})
-
-                elif lst[i][name] == "unknown":
-                    row.update({curve[i]: "unknown"})
-                    row.update({prob[i]: row[name]})
+                if row["Special_lithology"] != UNDEFINED:
+                    row.update({curve[i]: ""})
+                    row.update({prob[i]: ""})
 
                 else:
                     row.update({curve[i]: name})
                     row.update({prob[i]: row[name]})
             else:
                 row.update({curve[i]: ""})
-                row.update({prob[i]: 0})
+                row.update({prob[i]: ""})
 
             if i == 2:
                 break
@@ -286,6 +283,58 @@ def pick_most(data):
 
 
 def handle_addition(point):
-    if int(point) <= 0:
-        return 0
-    return int(point)
+    return point if int(point) >= 0 else 0
+
+
+def simplify_data(data):
+    core_depofacies = []
+    biostrats = []
+    reliabilities = []
+    laterals = []
+    special_lithologies = []
+
+    simplified_data = []
+
+    for row in data:
+        if row["Core_depofacies"] != UNDEFINED:
+            core_depofacies.append(row["Core_depofacies"])
+
+        if row["Reliability"] != UNDEFINED:
+            reliabilities.append(row["Reliability"])
+
+        if row["Biostratigraphy"] != UNDEFINED:
+            biostrats.append(row["Biostratigraphy"])
+
+        if row["Special_lithology"] != UNDEFINED:
+            special_lithologies.append(row["Special_lithology"])
+
+        if row["Lateral_proximity"] != UNDEFINED:
+            laterals.append(row["Lateral_proximity"])
+
+        if int(row["Boundary_flag"]) == 1:
+            depo = pick_most(core_depofacies)
+            biostrat = pick_most(biostrats)
+            reliability = pick_most(reliabilities)
+            lateral = pick_most(laterals)
+            lithos = remove_duplicate(deepcopy(special_lithologies))
+
+            depo = depo if depo else UNDEFINED
+            biostrat = biostrat if biostrat else UNDEFINED
+            reliability = reliability if reliability else UNDEFINED
+            lateral = lateral if lateral else UNDEFINED
+
+            row.update({"Special_lithology": lithos})
+
+            row.update({"Core_depofacies": depo})
+
+            row.update({"Biostratigraphy": biostrat})
+
+            row.update({"Reliability": reliability})
+
+            row.update({"Lateral_proximity": lateral})
+
+            simplified_data.append(deepcopy(row))
+            core_depofacies.clear()
+            special_lithologies.clear()
+
+    return simplified_data

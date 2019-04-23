@@ -3,7 +3,6 @@ from utilities import utils_func
 
 def get_idx(number_of_similar_unit):
     number_of_similar_unit = int(number_of_similar_unit)
-    print(number_of_similar_unit)
     if number_of_similar_unit == 0:
         return 0
     elif number_of_similar_unit in [1, 2]:

@@ -1,4 +1,3 @@
-from copy import deepcopy
 from utilities import utils_func
 
 
@@ -16,22 +15,6 @@ def find_max_curve(row):
     return lst
 
 
-def simplify_data(data):
-    lst = []
-    lithos = []
-
-    for i in range(len(data)):
-        if data[i]["Special_lithology"] != "-9999":
-            lithos.append(int(data[i]["Special_lithology"]))
-        if data[i]["Boundary_flag"] == "1":
-            final_lithologies = deepcopy(utils_func.remove_duplicate(lithos))
-            data[i].update({"Special_lithology": final_lithologies})
-            lst.append(data[i])
-            lithos.clear()
-
-    return lst
-
-
 def find_max_radius_30(unit_index, data):
     unit_index = int(unit_index)
     lst = []
@@ -42,7 +25,7 @@ def find_max_radius_30(unit_index, data):
     for i in range(unit_index, -1, -1):
         if abs(float(data[i]["TVD"]) - float(
                 data[unit_index]["TVD"])) <= 30 and not utils_func.contain_special_lithology(
-                data[i]["Special_lithology"]):
+            data[i]["Special_lithology"]):
             lst.extend(find_max_curve(data[i]))
         else:
             break
@@ -50,7 +33,7 @@ def find_max_radius_30(unit_index, data):
     for i in range(unit_index + 1, len(data), 1):
         if abs(float(data[i]["TVD"]) - float(
                 data[unit_index]["TVD"])) <= 30 and not utils_func.contain_special_lithology(
-                data[i]["Special_lithology"]):
+            data[i]["Special_lithology"]):
             lst.extend(find_max_curve(data[i]))
         else:
             break
@@ -114,9 +97,7 @@ def update_most_abundant(row, group):
         points = [-2, -1, -2, -1, 0, 2]
 
     for i in range(len(points)):
-        row.update(utils_func.update_row_group(utils_func.GROUPS[i], row, points[i]))
-
-    return row
+        utils_func.update_row_group(utils_func.GROUPS[i], row, points[i])
 
 
 def update_second_most_abundant(row, group):
@@ -140,9 +121,7 @@ def update_second_most_abundant(row, group):
         points = [-2, -2, -2, -1, 0, 1]
 
     for i in range(len(points)):
-        row.update(utils_func.update_row_group(utils_func.GROUPS[i], row, points[i]))
-
-    return row
+        utils_func.update_row_group(utils_func.GROUPS[i], row, points[i])
 
 
 def update_third_most_abundant(row, group):
@@ -166,9 +145,7 @@ def update_third_most_abundant(row, group):
         points = [-1, -1, -1, 0, 0, 0]
 
     for i in range(len(points)):
-        row.update(utils_func.update_row_group(utils_func.GROUPS[i], row, points[i]))
-
-    return row
+        utils_func.update_row_group(utils_func.GROUPS[i], row, points[i])
 
 
 def update_4_6_most_abundant(row, group):
@@ -192,38 +169,32 @@ def update_4_6_most_abundant(row, group):
         points = [0, 0, 0, 0, 0, -2]
 
     for i in range(len(points)):
-        row.update(utils_func.update_row_group(utils_func.GROUPS[i], row, points[i]))
-
-    return row
+        utils_func.update_row_group(utils_func.GROUPS[i], row, points[i])
 
 
 def update_row(row, groups):
     if len(groups) > 0:
-        row.update(update_most_abundant(row, groups[0]))
+        update_most_abundant(row, groups[0])
 
     if len(groups) > 1:
-        row.update(update_second_most_abundant(row, groups[1]))
+        update_second_most_abundant(row, groups[1])
 
     if len(groups) > 2:
-        row.update(update_third_most_abundant(row, groups[2]))
+        update_third_most_abundant(row, groups[2])
 
     if len(groups) > 3:
         for i in range(3, len(groups)):
-            row.update(update_4_6_most_abundant(row, groups[i]))
-
-    return row
+            update_4_6_most_abundant(row, groups[i])
 
 
 def associated_facies(data, iter):
-    simplified_data = simplify_data(deepcopy(data))
-
     for row in reversed(data):
-        groups = pick_group(divide_group(find_max_radius_30(row["Unit_index"], simplified_data)))
+        groups = pick_group(divide_group(find_max_radius_30(row["Unit_index"], data)))
         tmp = []
         for item in groups:
             tmp.append(item["name"])
         if len(groups) > 0:
-            row.update(update_row(row, groups))
+            update_row(row, groups)
             row.update({"Facies_group": tmp})
 
     utils_func.export_to_csv(data, f"csv/associated_facies{iter}.csv")
