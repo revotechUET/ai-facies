@@ -27,7 +27,7 @@ def add_point_coal(row):
             row.update({name: int(row[name]) + 1})
 
 
-def updateRow(row, litho_code):
+def update_row(row, litho_code):
     litho_code = int(litho_code)
     if litho_code in [1, 2]:
         return add_point_volcanics(row)
@@ -55,6 +55,6 @@ def special_lithology(data):
     for i in range(len(data)):
         lithos = find_adjacent_unit_special_lithology(data[i]["Unit_index"], data)
         for lithology in lithos:
-            updateRow(data[i], lithology)
+            update_row(data[i], lithology)
 
     utils_func.export_to_csv(data, f"csv/special_lithology.csv")

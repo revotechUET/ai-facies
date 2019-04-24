@@ -2,16 +2,16 @@ from utilities import utils_func
 
 
 def find_max_curve(row):
-    max = 0
+    max_value = 0
     lst = []
     for name in utils_func.NAMES:
-        if int(row[name]) > max:
-            max = int(row[name])
+        if int(row[name]) > max_value:
+            max_value = int(row[name])
 
-    if max > 0:
+    if max_value > 0:
         for name in utils_func.NAMES:
-            if int(row[name]) == max:
-                lst.append({name: max})
+            if int(row[name]) == max_value:
+                lst.append({name: max_value})
     return lst
 
 
@@ -38,6 +38,7 @@ def divide_group(data):
     lst.append({"name": "Deep_Lacustrine", "occurrence": 0, "points": 0})
 
     for item in data:
+        facy_name = None
         for key in item.keys():
             facy_name = key
         group_name = utils_func.get_group_name(facy_name)
@@ -86,11 +87,11 @@ def update_row(row, group):
         utils_func.update_row_group(utils_func.GROUPS[i], row, points[i][sharp_boundary])
 
 
-def lower_boundary(data, iter):
+def lower_boundary(data, it):
     for row in reversed(data):
         group = pick_group(divide_group(find_max_lower(row["Unit_index"], data)))
         if group:
             update_row(row, group)
             row.update({"Facies_below": group["name"] if group else None})
 
-    utils_func.export_to_csv(data, f"csv/lower_boundary{iter}.csv")
+    utils_func.export_to_csv(data, f"csv/lower_boundary{it}.csv")

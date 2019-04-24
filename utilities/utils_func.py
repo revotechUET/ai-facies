@@ -135,6 +135,7 @@ def get_group_depofacies(name):
 
 
 def get_group_name(facy_name):
+    facy_code = None
     for key, item in CODE_TO_NAME.items():
         if item == facy_name:
             facy_code = key
@@ -146,12 +147,12 @@ def get_group_name(facy_name):
 
 def get_max_by_key(key, data):
     lst = []
-    max = 0
+    max_value = 0
     for item in data:
-        if int(item[key]) > max:
-            max = item[key]
+        if int(item[key]) > max_value:
+            max_value = item[key]
     for item in data:
-        if int(item[key]) == max:
+        if int(item[key]) == max_value:
             lst.append(item)
     return lst
 
