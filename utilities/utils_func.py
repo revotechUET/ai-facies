@@ -96,7 +96,7 @@ GROUPS = [
     "Deep_Marine"
 ]
 
-UNDEFINED = "-9999"
+UNDEFINED = -9999
 
 
 def convert_name_to_number(data):
@@ -125,10 +125,6 @@ def map_core_depofacies_code_to_name(code):
         return CODE_TO_NAME[code]
     except KeyError:
         return None
-
-
-def convert_string_to_array(string):
-    return string[1:-1].split(", ") if string != '[]' else []
 
 
 def get_group_depofacies(name):
@@ -170,32 +166,6 @@ def update_row_group(group_name, row, point):
                 row.update({name: handle_addition(int(row[name]) + point)})
 
 
-def convert_unit_by_unit(data):
-    lst = []
-    lithos = []
-    depos = []
-    for i in range(0, len(data)):
-        if data[i]["Special_lithology"] != UNDEFINED:
-            lithos.append(float(data[i]["Special_lithology"]))
-        if data[i]["Core_depofacies"] != UNDEFINED:
-            depos.append((float(data[i]["Core_depofacies"])))
-        if data[i]["Boundary_flag"] == "1":
-            final_litho = deepcopy(remove_duplicate(lithos))
-            final_depos = deepcopy(remove_duplicate(depos))
-            data[i].update({"Special_lithology": final_litho, "Core_depofacies": final_depos})
-            lst.append(data[i])
-            lithos.clear()
-            depos.clear()
-
-    return lst
-
-
-def contain_special_lithology(litho):
-    if len(litho) > 0:
-        return True
-    return False
-
-
 def get_key(lst, i):
     return [key for key in lst[i].keys()][0]
 
@@ -219,6 +189,7 @@ def update_name(lst):
     names = []
 
     while i < len(lst):
+        prob = 0
         tmp = 0
         res = ""
         while i + tmp < len(lst) - 1 and lst[i + tmp]["point"] == lst[i + tmp + 1]["point"]:
@@ -314,19 +285,19 @@ def simplify_data(data):
     simplified_data = []
 
     for row in data:
-        if row["Core_depofacies"] != UNDEFINED:
+        if int(row["Core_depofacies"]) != UNDEFINED:
             core_depofacies.append(row["Core_depofacies"])
 
-        if row["Reliability"] != UNDEFINED:
+        if int(row["Reliability"]) != UNDEFINED:
             reliabilities.append(row["Reliability"])
 
-        if row["Biostratigraphy"] != UNDEFINED:
+        if int(row["Biostratigraphy"]) != UNDEFINED:
             biostrats.append(row["Biostratigraphy"])
 
-        if row["Special_lithology"] != UNDEFINED:
+        if int(row["Special_lithology"]) != UNDEFINED:
             special_lithologies.append(row["Special_lithology"])
 
-        if row["Lateral_proximity"] != UNDEFINED:
+        if int(row["Lateral_proximity"]) != UNDEFINED:
             laterals.append(row["Lateral_proximity"])
 
         if int(row["Boundary_flag"]) == 1:

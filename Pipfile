@@ -10,6 +10,8 @@ numpy = "*"
 pandas = "*"
 matplotlib = "*"
 seaborn = "*"
+pywt = "*"
+statsmodels = "*"
 
 [requires]
 python_version = "3.7.3"

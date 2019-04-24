@@ -3,19 +3,19 @@ from utilities import utils_func
 
 def update_fluvial(row):
     points = []
-    if row["Biostratigraphy"] == "1":
+    if int(row["Biostratigraphy"]) == 1:
         points = [6, 3, 1]
-    elif row["Biostratigraphy"] == "2":
+    elif int(row["Biostratigraphy"]) == 2:
         points = [4, 2, 1]
-    elif row["Biostratigraphy"] == "3":
+    elif int(row["Biostratigraphy"]) == 3:
         points = [2, 1, 0]
-    elif row["Biostratigraphy"] == "4":
+    elif int(row["Biostratigraphy"]) == 4:
         points = [-2, -1, 0]
-    elif row["Biostratigraphy"] == "5":
+    elif int(row["Biostratigraphy"]) == 5:
         points = ["x"]
-    elif row["Biostratigraphy"] == "6":
+    elif int(row["Biostratigraphy"]) == 6:
         points = ["x"]
-    elif row["Biostratigraphy"] == "7":
+    elif int(row["Biostratigraphy"]) == 7:
         points = ["x"]
 
     if len(points) > 0:
@@ -35,19 +35,19 @@ def update_fluvial(row):
 
 def update_shallow_lacustrine(row):
     points = []
-    if row["Biostratigraphy"] == "1":
+    if int(row["Biostratigraphy"]) == 1:
         points = [-2, -1, 0]
-    elif row["Biostratigraphy"] == "2":
+    elif int(row["Biostratigraphy"]) == 2:
         points = [-2, -1, 0]
-    elif row["Biostratigraphy"] == "3":
+    elif int(row["Biostratigraphy"]) == 3:
         points = [6, 3, 1]
-    elif row["Biostratigraphy"] == "4":
+    elif int(row["Biostratigraphy"]) == 4:
         points = [-6, -3, -1]
-    elif row["Biostratigraphy"] == "5":
+    elif int(row["Biostratigraphy"]) == 5:
         points = ["x"]
-    elif row["Biostratigraphy"] == "6":
+    elif int(row["Biostratigraphy"]) == 6:
         points = ["x"]
-    elif row["Biostratigraphy"] == "7":
+    elif int(row["Biostratigraphy"]) == 7:
         points = ["x"]
 
     if len(points) > 0:
@@ -67,19 +67,19 @@ def update_shallow_lacustrine(row):
 
 def update_deep_lacustrine(row):
     points = []
-    if row["Biostratigraphy"] == "1":
+    if int(row["Biostratigraphy"]) == 1:
         points = [-6, -3, -1]
-    elif row["Biostratigraphy"] == "2":
+    elif int(row["Biostratigraphy"]) == 2:
         points = [-2, -1, 0]
-    elif row["Biostratigraphy"] == "3":
+    elif int(row["Biostratigraphy"]) == 3:
         points = [6, 3, 1]
-    elif row["Biostratigraphy"] == "4":
+    elif int(row["Biostratigraphy"]) == 4:
         points = [-6, -3, -1]
-    elif row["Biostratigraphy"] == "5":
+    elif int(row["Biostratigraphy"]) == 5:
         points = ["x"]
-    elif row["Biostratigraphy"] == "6":
+    elif int(row["Biostratigraphy"]) == 6:
         points = ["x"]
-    elif row["Biostratigraphy"] == "7":
+    elif int(row["Biostratigraphy"]) == 7:
         points = ["x"]
 
     if len(points) > 0:
@@ -99,19 +99,19 @@ def update_deep_lacustrine(row):
 
 def update_marginal_marine(row):
     points = []
-    if row["Biostratigraphy"] == "1":
+    if int(row["Biostratigraphy"]) == 1:
         points = ["x"]
-    elif row["Biostratigraphy"] == "2":
+    elif int(row["Biostratigraphy"]) == 2:
         points = ["x"]
-    elif row["Biostratigraphy"] == "3":
+    elif int(row["Biostratigraphy"]) == 3:
         points = ["x"]
-    elif row["Biostratigraphy"] == "4":
+    elif int(row["Biostratigraphy"]) == 4:
         points = [3, 1, 0]
-    elif row["Biostratigraphy"] == "5":
+    elif int(row["Biostratigraphy"]) == 5:
         points = [3, 1, 0]
-    elif row["Biostratigraphy"] == "6":
+    elif int(row["Biostratigraphy"]) == 6:
         points = [3, 1, 0]
-    elif row["Biostratigraphy"] == "7":
+    elif int(row["Biostratigraphy"]) == 7:
         points = [-2, -1, 0]
 
     if len(points) > 0:
@@ -131,19 +131,19 @@ def update_marginal_marine(row):
 
 def update_shallow_marine(row):
     points = []
-    if row["Biostratigraphy"] == "1":
+    if int(row["Biostratigraphy"]) == 1:
         points = ["x"]
-    elif row["Biostratigraphy"] == "2":
+    elif int(row["Biostratigraphy"]) == 2:
         points = ["x"]
-    elif row["Biostratigraphy"] == "3":
+    elif int(row["Biostratigraphy"]) == 3:
         points = ["x"]
-    elif row["Biostratigraphy"] == "4":
+    elif int(row["Biostratigraphy"]) == 4:
         points = [2, 1, 0]
-    elif row["Biostratigraphy"] == "5":
+    elif int(row["Biostratigraphy"]) == 5:
         points = [3, 1, 0]
-    elif row["Biostratigraphy"] == "6":
+    elif int(row["Biostratigraphy"]) == 6:
         points = [6, 3, 1]
-    elif row["Biostratigraphy"] == "7":
+    elif int(row["Biostratigraphy"]) == 7:
         points = [3, 1, 0]
 
     if len(points) > 0:
@@ -163,19 +163,19 @@ def update_shallow_marine(row):
 
 def update_deep_marine(row):
     points = []
-    if row["Biostratigraphy"] == "1":
+    if int(row["Biostratigraphy"]) == 1:
         points = ["x"]
-    elif row["Biostratigraphy"] == "2":
+    elif int(row["Biostratigraphy"]) == 2:
         points = ["x"]
-    elif row["Biostratigraphy"] == "3":
+    elif int(row["Biostratigraphy"]) == 3:
         points = ["x"]
-    elif row["Biostratigraphy"] == "4":
+    elif int(row["Biostratigraphy"]) == 4:
         points = [0, 0, 0]
-    elif row["Biostratigraphy"] == "5":
+    elif int(row["Biostratigraphy"]) == 5:
         points = [-4, -2, 0]
-    elif row["Biostratigraphy"] == "6":
+    elif int(row["Biostratigraphy"]) == 6:
         points = [3, 1, 0]
-    elif row["Biostratigraphy"] == "7":
+    elif int(row["Biostratigraphy"]) == 7:
         points = [6, 3, 1]
 
     if len(points) > 0:

@@ -17,14 +17,14 @@ def main():
     print(f"prepare_data execution time: {round(end - start, 2)}s\n")
 
     start = time.time()
-    init_point(data)
-    end = time.time()
-    print(f"init_point execution time: {round(end - start, 2)}s\n")
-
-    start = time.time()
     data = utils_func.simplify_data(data)
     end = time.time()
     print(f"simplify_data execution time: {round(end - start, 2)}s\n")
+
+    start = time.time()
+    init_point(data)
+    end = time.time()
+    print(f"init_point execution time: {round(end - start, 2)}s\n")
 
     start = time.time()
     similar_unit(data)

@@ -19,21 +19,19 @@ def find_max_radius_30(unit_index, data):
     unit_index = int(unit_index)
     lst = []
 
-    if utils_func.contain_special_lithology(data[unit_index]["Special_lithology"]):
+    if len(data[unit_index]["Special_lithology"]) > 0:
         return lst
 
     for i in range(unit_index, -1, -1):
         if abs(float(data[i]["TVD"]) - float(
-                data[unit_index]["TVD"])) <= 30 and not utils_func.contain_special_lithology(
-            data[i]["Special_lithology"]):
+                data[unit_index]["TVD"])) <= 30 and not len(data[i]["Special_lithology"]):
             lst.extend(find_max_curve(data[i]))
         else:
             break
 
     for i in range(unit_index + 1, len(data), 1):
         if abs(float(data[i]["TVD"]) - float(
-                data[unit_index]["TVD"])) <= 30 and not utils_func.contain_special_lithology(
-            data[i]["Special_lithology"]):
+                data[unit_index]["TVD"])) <= 30 and not len(data[i]["Special_lithology"]):
             lst.extend(find_max_curve(data[i]))
         else:
             break

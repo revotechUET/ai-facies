@@ -22,8 +22,8 @@ def handle_point(current_point, radius):
 
 def similar_unit(data):
     for i in range(len(data)):
-        if data[i]["Number_of_similar_units_50"] != "0" or data[i]["Core_depofacies"] != "-9999":
-            unit_index = utils_func.convert_string_to_array(data[i]["Index_of_similar_units_50"])
+        if data[i]["Number_of_similar_units_50"] != 0 or int(data[i]["Core_depofacies"]) != -9999:
+            unit_index = data[i]["Index_of_similar_units_50"]
             idx = data[i]["Unit_index"]
             unit_index.append(idx)
             codes = find_unit_core_depofacies(unit_index, data)
@@ -33,8 +33,8 @@ def similar_unit(data):
                     new_point = handle_point(data[i][name], "0-50")
                     data[i].update({name: new_point})
 
-        if data[i]["Number_of_similar_units_100"] != "0":
-            unit_index = utils_func.convert_string_to_array(data[i]["Index_of_similar_units_100"])
+        if data[i]["Number_of_similar_units_100"] != 0:
+            unit_index = data[i]["Index_of_similar_units_100"]
             codes = find_unit_core_depofacies(unit_index, data)
             for code in codes:
                 name = utils_func.map_core_depofacies_code_to_name(code)
