@@ -459,6 +459,15 @@ def init_aggradational_lacustrine_shoreface(data_set):
                 point = 3
             else:
                 point = 2
+
+    if data_set["Lithofacies_major"] == "2" and data_set["GR_shape_code"] == "2":
+        u_thick = float(data_set["Unit_Thick"])
+        if 1 <= u_thick < 5:
+            if u_thick >= 3:
+                point = 4
+            else:
+                point = 5
+
     return point + additional_point if point else 0
 
 
@@ -473,6 +482,15 @@ def init_aggradational_marine_shoreface(data_set):
                 point = 5
             else:
                 point = 4
+
+    if data_set["Lithofacies_major"] == "2" and data_set["GR_shape_code"] == "2":
+        u_thick = float(data_set["Unit_Thick"])
+        if 1 <= u_thick < 5:
+            if u_thick >= 3:
+                point = 4
+            else:
+                point = 5
+
     return point + additional_point if point else 0
 
 
