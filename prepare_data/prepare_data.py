@@ -1,5 +1,6 @@
 from prepare_data.core.dataset import load_dataset
 from prepare_data.unit_matching import *
+from utilities import utils_func
 
 
 def prepare_data():
@@ -40,4 +41,6 @@ def prepare_data():
         for key, value in data.items():
             row.update({key: value[i]})
         data_set.append(row)
+
+    utils_func.export_to_csv(data_set, "csv/prepare_data.csv")
     return data_set

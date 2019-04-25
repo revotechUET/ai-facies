@@ -72,16 +72,16 @@ def update_row(row, group):
         points = [[-1, 0], [2, 2], [-1, -1], [0, 0], [0, 0], ["x", -3]]
 
     if group["name"] == "Deep_Lacustrine":
-        points = [[-2, -1], [2, 1], [2, 2], ["x", -3], ["x", -3], ["x", -4]]
+        points = [[-2, -1], [2, 1], [2, 2], [-6, -3], [-6, -3], ["x", -4]]
 
     if group["name"] == "Marginal_Marine":
-        points = [[-1, 0], [-2, -2], ["x", -2], [2, 2], [1, 1], [0, 0]]
+        points = [[-1, 0], [-2, -2], [-8, -2], [2, 2], [1, 1], [0, 0]]
 
     if group["name"] == "Shallow_Marine":
-        points = [["x", -2], ["x", -2], ["x", "x"], [1, 1], [2, 2], [1, 1]]
+        points = [[-5, -2], [-3, -2], [-8], [1, 1], [2, 2], [1, 1]]
 
     if group["name"] == "Deep_Marine":
-        points = [["x", -3], ["x", "x"], ["x", "x"], [-1, 1], [0, 1], [2, 2]]
+        points = [[-7, -3], [-6, -6], ["x", "x"], [-1, 1], [0, 1], [2, 2]]
 
     for i in range(len(points)):
         utils_func.update_row_group(utils_func.GROUPS[i], row, points[i][sharp_boundary])

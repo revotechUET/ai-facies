@@ -172,12 +172,15 @@ def get_key(lst, i):
 
 
 def calculate_uncertainty(row):
-    if "/" in row["Most"] or not row["Most"]:
-        return 1
+    if len(row["Special_lithology"]) > 0:
+        return 4
+
+    if int(row["Sum"]) == 0:
+        return 3
 
     if row["Second_Most"] and "/" not in row["Second_Most"] and float(row[row["Most"]]) - float(
             row[row["Second_Most"]]) < 0.1:
-        return 1
+        return 2
 
     if row["Most"] and float(row[row["Most"]]) < 0.3:
         return 1
@@ -235,17 +238,14 @@ def convert_data(data):
         for i in range(len(curve)):
             if len(lst) > i:
                 if len(row["Special_lithology"]) > 0:
-                    row.update({
-                        curve[i]: "",
-                        prob[i]: ""
-                    })
+                    row.update({curve[i]: "", prob[i]: ""})
                 else:
                     row.update({curve[i]: lst[i]["curve"], prob[i]: lst[i]["prob"]})
             else:
-                row.update({
-                    curve[i]: "",
-                    prob[i]: ""
-                })
+                if int(row["Sum"]) == 0:
+                    row.update({curve[i]: "Indeterminate", prob[i]: 0})
+                else:
+                    row.update({curve[i]: "", prob[i]: ""})
 
     for row in data:
         row.update({"Uncertainty_flag": calculate_uncertainty(row)})

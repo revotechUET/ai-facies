@@ -28,9 +28,9 @@ def compute_rate_of_change(arr):
     upward = True
     count = 0
     i = 0
-    while difference[i] == 0 and i < n_samples:
+    while i < n_samples and difference[i] == 0:
         i += 1
-    if difference[i] < 0 and i < n_samples:
+    if i < n_samples and difference[i] < 0:
         upward = False
     for j in range(i + 1, n_samples):
         if (upward and difference[j] < 0) or ((not upward) and difference[j] > 0):
