@@ -1,63 +1,59 @@
-from prepare_data.prepare_data import prepare_data
-from initial_point.main import init_point
-from similar_unit.similar_unit import similar_unit
-from special_lithology.special_lithology import special_lithology
-from modifier_set1.modifier_set1 import modifier_set1
-from modifier_set2.modifier_set2 import modifier_set2
+from flask import Flask, jsonify, request
+from services import controller
+from numpy import array
 
-from utilities import utils_func
-import time
+app = Flask(__name__)
 
 
-def main():
-    print("Execution breakdown\n")
-    start = time.time()
-    data = prepare_data()
-    end = time.time()
-    print(f"prepare_data execution time: {round(end - start, 2)}s\n")
+@app.route("/api/v1/unit-breakdown", methods=["POST"])
+def unit_breakdown():
+    data = request.get_json()
+    try:
+        gr = array(data["GR"])
+        tvd = array(data["TVD"])
+    except KeyError:
+        return parse_response("Field Missing", False), 400
 
-    start = time.time()
-    data = utils_func.simplify_data(data)
-    end = time.time()
-    print(f"simplify_data execution time: {round(end - start, 2)}s\n")
+    try:
+        data = controller.unit_breakdown(gr, tvd)
+        print(data)
+    except Exception as e:
+        print(str(e))
+        return parse_response("Internal Server Error", False), 500
 
-    start = time.time()
-    init_point(data)
-    end = time.time()
-    print(f"init_point execution time: {round(end - start, 2)}s\n")
-
-    start = time.time()
-    similar_unit(data)
-    end = time.time()
-    print(f"similar_unit execution time: {round(end - start, 2)}s\n")
-
-    start = time.time()
-    special_lithology(data)
-    end = time.time()
-    print(f"special_lithology execution time: {round(end - start, 2)}s\n")
-
-    start = time.time()
-    modifier_set1(data)
-    end = time.time()
-    print(f"modifier_set1 execution time: {round(end - start, 2)}s\n")
-
-    start = time.time()
-    modifier_set2(data)
-    end = time.time()
-    print(f"modifier_set2 execution time: {round(end - start, 2)}s\n")
-
-    start = time.time()
-    utils_func.convert_data(data)
-    end = time.time()
-    print(f"convert_data execution time: {round(end - start, 2)}s\n")
-
-    start = time.time()
-    utils_func.export_to_csv(data, "csv/final.csv")
-    end = time.time()
-    print(f"export_to_csv execution time: {round(end - start, 2)}s\n")
+    return parse_response(list(data))
 
 
-main_start = time.time()
-main()
-main_end = time.time()
-print(f"Total execution time: {round(main_end - main_start, 2)}s\n")
+@app.route("/api/v1/expert-rule", methods=["POST"])
+def expert_rule():
+    data = request.get_json()
+    try:
+        for item in ["GR", "Depth", "TVD", "Boundary_flag"]:
+            if item not in data.keys():
+                return parse_response("Field Missing", False), 400
+        for key in data.keys():
+            data.update({key: array(data[key])})
+        res = controller.expert_rule(data)
+
+    except Exception as e:
+        print(str(e))
+        return parse_response("Internal Server Error", False), 500
+
+    return parse_response(jsonify(res))
+
+
+def parse_response(data, success=True):
+    if success:
+        return jsonify({
+            "success": True,
+            "payload": data
+        })
+    else:
+        return jsonify({
+            "success": False,
+            "message": data
+        })
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=9999)

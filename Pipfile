@@ -12,6 +12,8 @@ matplotlib = "*"
 seaborn = "*"
 pywt = "*"
 statsmodels = "*"
+flask = "*"
+requests = "*"
 
 [requires]
 python_version = "3.7.3"
