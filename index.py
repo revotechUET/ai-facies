@@ -28,7 +28,7 @@ def unit_breakdown():
 def expert_rule():
     data = request.get_json()
     try:
-        for item in ["GR", "Depth", "TVD", "Boundary_flag"]:
+        for item in ["GR", "MUD_VOLUME", "TVD", "Boundary_flag"]:
             if item not in data.keys():
                 return parse_response("Field Missing", False), 400
         for key in data.keys():
@@ -56,4 +56,4 @@ def parse_response(data, success=True):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=9999)
+    app.run(port=9999)
