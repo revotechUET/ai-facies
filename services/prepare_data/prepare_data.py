@@ -1,8 +1,6 @@
 from .unit_matching import *
 
 
-
-
 def prepare_data(data):
     gr = data["GR"]
     v_mud = data["MUD_VOLUME"]

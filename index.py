@@ -39,7 +39,7 @@ def expert_rule():
         print(str(e))
         return parse_response("Internal Server Error", False), 500
 
-    return parse_response(jsonify(res))
+    return parse_response(res)
 
 
 def parse_response(data, success=True):

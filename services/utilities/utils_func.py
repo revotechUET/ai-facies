@@ -87,6 +87,21 @@ NAMES = [
     "Marine_Deepwater"
 ]
 
+OUTPUT = [
+    "Most",
+    "Most_Prob",
+    "Second_Most",
+    "Second_Most_Prob",
+    "Third_Most",
+    "Third_Most_Prob",
+    "Uncertainty_flag",
+    "Lithofacies_major",
+    "Stacking_pattern",
+    "GR_shape_code"
+]
+
+OUTPUT.extend(NAMES)
+
 GROUPS = [
     "Fluvial",
     "Shallow_Lacustrine",
@@ -256,15 +271,18 @@ def convert_data(data):
     for row in data:
         row.update({"Uncertainty_flag": calculate_uncertainty(row)})
 
-
     # convert_name_to_number(data)
 
 
 def convert_sample_by_sample(data, initial_data):
+    final = []
     for row in initial_data:
+        tmp = {}
         for key in data[row["Unit_index"]].keys():
-            if key not in row.keys():
-                row.update({key: data[row["Unit_index"]][key]})
+            if key not in row.keys() and key in OUTPUT:
+                tmp.update({key: data[row["Unit_index"]][key]})
+        final.append(tmp)
+    return final
 
 
 def export_to_csv(data, filename):

@@ -2,6 +2,7 @@ import unittest
 import pandas as pd
 import requests
 import json
+from csv import DictWriter
 
 
 class MyTest(unittest.TestCase):
@@ -23,7 +24,8 @@ class MyTest(unittest.TestCase):
 
         data = json.loads(res.text)
 
-        print(data)
+        if data["success"]:
+            print(data["payload"])
 
     def test_expert_rule(self):
         data = pd.read_csv("csv/initial_data.csv")
@@ -38,4 +40,12 @@ class MyTest(unittest.TestCase):
 
         res = requests.post(url, data=json.dumps(dct), headers=headers)
 
-        print(res)
+        data = json.loads(res.text)
+
+        if data["success"]:
+            headers = list(data["payload"][0].keys())
+
+            with open("csv/final_expert_rule.csv", "w") as o_file:
+                dict_writer = DictWriter(o_file, fieldnames=headers)
+                dict_writer.writeheader()
+                dict_writer.writerows(data["payload"])

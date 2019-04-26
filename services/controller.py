@@ -54,12 +54,11 @@ def expert_rule(input_data):
     print(f"convert_data execution time: {round(end - start, 2)}s\n")
 
     start = time.time()
-    utils_func.convert_sample_by_sample(data, initial_data)
+    final = utils_func.convert_sample_by_sample(data, initial_data)
     end = time.time()
     print(f"convert_sample_by_sample execution time: {round(end - start, 2)}s\n")
 
-
-    return data
+    return final
 
     # start = time.time()
     # utils_func.export_to_csv(initial_data, "csv/final.csv")
