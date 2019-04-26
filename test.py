@@ -42,6 +42,8 @@ class MyTest(unittest.TestCase):
 
         data = json.loads(res.text)
 
+        print(data)
+
         if data["success"]:
             headers = list(data["payload"][0].keys())
 

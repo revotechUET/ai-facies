@@ -210,26 +210,41 @@ def calculate_uncertainty(row):
 
 
 def update_name(lst):
-    i = 0
     names = []
 
-    while i < len(lst):
-        prob = 0
-        tmp = 0
-        res = ""
-        while i + tmp < len(lst) - 1 and lst[i + tmp]["point"] == lst[i + tmp + 1]["point"]:
-            tmp += 1
-        for j in range(i, i + tmp + 1):
-            res += lst[j]["name"]
-            if j < i + tmp:
-                res += "/"
-            prob = lst[j]["point"]
-        if tmp == 0:
-            names.append({"curve": lst[i]["name"], "prob": prob})
+    if len(lst) == 1:
+        for i in range(3):
+            names.append({"curve": lst[0]["name"], "prob": lst[0]["point"]})
+
+    elif len(lst) == 2:
+        if lst[0]["point"] > lst[1]["point"]:
+            for i in range(2):
+                names.append({"curve": lst[0]["name"], "prob": lst[0]["point"]})
+            names.append({"curve": lst[1]["name"], "prob": lst[1]["point"]})
+
         else:
-            for t in range(tmp + 1):
-                names.append({"curve": res, "prob": prob})
-        i += tmp + 1
+            for i in range(3):
+                names.append({"curve": lst[0]["name"] + "/" + lst[1]["name"], "prob": lst[0]["point"]})
+
+    elif len(lst) >= 3:
+        i = 0
+        while i < len(lst):
+            prob = 0
+            tmp = 0
+            res = ""
+            while i + tmp < len(lst) - 1 and lst[i + tmp]["point"] == lst[i + tmp + 1]["point"]:
+                tmp += 1
+            for j in range(i, i + tmp + 1):
+                res += lst[j]["name"]
+                if j < i + tmp:
+                    res += "/"
+                prob = lst[j]["point"]
+            if tmp == 0:
+                names.append({"curve": lst[i]["name"], "prob": prob})
+            else:
+                for t in range(tmp + 1):
+                    names.append({"curve": res, "prob": prob})
+            i += tmp + 1
     return names
 
 
@@ -262,11 +277,6 @@ def convert_data(data):
                     row.update({curve[i]: "", prob[i]: ""})
                 else:
                     row.update({curve[i]: lst[i]["curve"], prob[i]: lst[i]["prob"]})
-            else:
-                if int(row["Sum"]) == 0:
-                    row.update({curve[i]: "Indeterminate", prob[i]: 0})
-                else:
-                    row.update({curve[i]: "", prob[i]: ""})
 
     for row in data:
         row.update({"Uncertainty_flag": calculate_uncertainty(row)})
