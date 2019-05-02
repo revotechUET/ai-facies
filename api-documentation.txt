@@ -1,1 +1,98 @@
-https://app.swaggerhub.com/apis/tranhieu956230/default-title/0.1
+Port: 9999
+Host: ?
+
+
+POST /api/v1/unit-breakdown
+    Input: JSON Object
+
+        {
+            GR: [],
+            TVD: []
+        }
+
+    Output: JSON Object
+        - success
+            {
+                payload: [0, 1, 1, 1, 0],
+                success: True
+            }
+        - fail
+            {
+                message: "",
+                success: False
+            }
+
+POST /api/v1/expert-rule
+    Input: JSON Object
+
+        {
+            GR: [],
+            TVD: [],
+            MUD_VOLUME: [],
+            Boundary_flag: [],
+            Biostratigraphy: [] (optional),
+            Lateral_proximity: [] (optional),
+            Special_lithology: [] (optional),
+            Core_depofacies: [] (optional),
+            Reliability: [] (optional)
+
+        }
+
+    Output: JSON Object
+        - success
+            {
+                payload: [
+                {
+                    'Aggradational_Lacustrine_Shoreface': 0.0,
+                    'Aggradational_Marine_Shoreface': 0.0, 
+                    'Alluvial_Fan': 0.0,
+                    'Crevasse_Splay': 0.0, 
+                    'Distal_Lacustrine_Turbidites': 0.0, 
+                    'Distal_Marine_Turbidites': 0.0, 
+                    'Distal_Sub-Lacustrine_Fan': 0.0, 
+                    'Distal_Submarine_Fan': 0.0, 
+                    'Fluvial_Channel': 0.0, 
+                    'Fluvial_Floodplain': 0.0, 
+                    'Fluvial_Point_Bar': 0.0,
+                    'Lacustrine_Deepwater': 0.0,
+                    'Lacustrine_Fan_Delta': 0.0, 
+                    'Lacustrine_Offshore_Transition': 0.0, 
+                    'Lacustrine_Shelf': 0.0, 
+                    'Lacustrine_Turbidite': 0.0,
+                    'Lagoon': 0.0, 'Levee': 0.0, 
+                    'Marine_Deepwater': 0.0,
+                    'Marine_Delta': 0.0, 
+                    'Marine_Fan_Delta': 0.0, 
+                    'Marine_Offshore_Transition': 0.0,
+                    'Marine_Shelf': 0.0, 
+                    'Marine_Turbidite': 0.17307692307692307,
+                    'Mixed_Tidal_Flat': 0.0, 
+                    'Most': 'Sandy_Tidal_Flat', 
+                    'Most_Prob': 0.4807692307692308,
+                    'Muddy_Tidal_Flat': 0.0, 
+                    'Progradational_Lacustrine_Delta': 0.0,
+                    'Progradational_Lacustrine_Shoreface': 0.0,
+                    'Progradational_Marine_Shoreface': 0.0, 
+                    'Proximal_Sub-Lacustrine_Fan': 0.0, 
+                    'Proximal_Submarine_Fan': 0.0, 
+                    'Sandy_Tidal_Flat': 0.4807692307692308,
+                    'Second_Most': 'Transgressive_Marine_Shoreface',
+                    'Second_Most_Prob': 0.34615384615384615, 
+                    'Third_Most': 'Marine_Turbidite', 
+                    'Third_Most_Prob': 0.17307692307692307, 
+                    'Tidal_Channel_And_Sand_Flat': 0.0, 
+                    'Transgressive_Lacustrine_Shoreface': 0.0, 
+                    'Transgressive_Marine_Shoreface': 0.34615384615384615, 
+                    'Uncertainty_flag': 0
+                }
+                ],
+                success: True
+            }
+        - fail
+            {
+                message: "",
+                success: False
+            }
+
+
+

@@ -24,11 +24,11 @@ class MyTest(unittest.TestCase):
 
         data = json.loads(res.text)
 
-        if data["success"]:
-            print(data["payload"])
+        print(data)
+
 
     def test_expert_rule(self):
-        data = pd.read_csv("csv/initial_data.csv")
+        data = pd.read_csv("csv/prepare_data.csv")
 
         dct = {}
 
@@ -42,12 +42,8 @@ class MyTest(unittest.TestCase):
 
         data = json.loads(res.text)
 
-        print(data)
-
         if data["success"]:
             headers = list(data["payload"][0].keys())
+            print(data["payload"][0])
 
-            with open("csv/final_expert_rule.csv", "w") as o_file:
-                dict_writer = DictWriter(o_file, fieldnames=headers)
-                dict_writer.writeheader()
-                dict_writer.writerows(data["payload"])
+
