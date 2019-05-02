@@ -1,16 +1,13 @@
-FROM python:3.7-alpine
+FROM revotech2017/wi-python-node:latest
 
-RUN apk update 
+RUN apk install pkg-config -y 
 
-RUN pip3 install pipenv
+RUN pip3 install  matplotlib seaborn pywt statsmodels flask
 
 COPY . /app
 
 WORKDIR /app
 
-RUN pipenv install 
-
-RUN pipenv shell
 
 CMD ["python3", "index.py"]
 
