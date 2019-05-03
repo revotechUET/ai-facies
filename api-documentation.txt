@@ -65,7 +65,7 @@ POST /api/v1/expert-rule
                     'Marine_Shelf': [], 
                     'Marine_Turbidite': [],
                     'Mixed_Tidal_Flat': [], 
-                    'Most_likely_faices': [],
+                    'Most_likely_facies': [],
                     'Most_Prob': [],
                     'Muddy_Tidal_Flat': [], 
                     'Progradational_Lacustrine_Delta': [],
