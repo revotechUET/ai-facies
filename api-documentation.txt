@@ -1,5 +1,4 @@
-Port: 9999
-Host: ?
+Host: http://ai-facies-dev.i2g.cloud/
 
 
 POST /api/v1/unit-breakdown

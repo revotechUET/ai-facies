@@ -35,7 +35,7 @@ class MyTest(unittest.TestCase):
             dct.update({key: list(value)})
 
         headers = {'content-type': 'application/json'}
-        url = 'http://127.0.0.1:9999/api/v1/expert-rule'
+        url = 'http://0.0.0.0:9999/api/v1/expert-rule'
 
         res = requests.post(url, data=json.dumps(dct), headers=headers)
 

@@ -7,39 +7,40 @@ app = Flask(__name__)
 
 @app.route("/api/v1/unit-breakdown", methods=["POST"])
 def unit_breakdown():
-    data = request.get_json()
     try:
-        gr = array(data["GR"])
-        tvd = array(data["TVD"])
-    except KeyError:
-        return parse_response("Field Missing", False), 400
+        data = request.get_json()
 
-    try:
-        data = controller.unit_breakdown(gr, tvd)
-        print(data)
+        for item in ["GR", "TVD"]:
+            if not data or item not in data.keys():
+                return parse_response("Field Missing", False), 400
+
+            gr = array(data["GR"])
+            tvd = array(data["TVD"])
+            data = controller.unit_breakdown(gr, tvd)
+            print(data)
+        return parse_response(list(data))
+
     except Exception as e:
         print(str(e))
         return parse_response("Internal Server Error", False), 500
-
-    return parse_response(list(data))
 
 
 @app.route("/api/v1/expert-rule", methods=["POST"])
 def expert_rule():
-    data = request.get_json()
     try:
+        data = request.get_json()
+
         for item in ["GR", "MUD_VOLUME", "TVD", "Boundary_flag"]:
-            if item not in data.keys():
+            if not data or item not in data.keys():
                 return parse_response("Field Missing", False), 400
         for key in data.keys():
             data.update({key: array(data[key])})
         res = controller.expert_rule(data)
+        return parse_response(res)
 
     except Exception as e:
         print(str(e))
         return parse_response("Internal Server Error", False), 500
-
-    return parse_response(res)
 
 
 def parse_response(data, success=True):
