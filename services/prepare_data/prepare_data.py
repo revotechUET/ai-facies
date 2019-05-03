@@ -1,5 +1,5 @@
 from .unit_matching import *
-
+import math
 
 def prepare_data(data):
     gr = data["GR"]
@@ -14,10 +14,8 @@ def prepare_data(data):
             data.update({item: [-9999] * len(gr)})
         else:
             for i in range(len(data[item])):
-                if data[item][i]:
-                    print(i)
+                if not data[item][i] or math.isnan(data[item][i]):
                     data[item][i] = -9999
-            print(item)
     # end
 
     shape_code = detect_label_shape_code(gr, v_mud, tvd)
