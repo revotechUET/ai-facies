@@ -26,7 +26,6 @@ class MyTest(unittest.TestCase):
 
         print(data)
 
-
     def test_expert_rule(self):
         data = pd.read_csv("csv/prepare_data.csv")
 
@@ -43,7 +42,9 @@ class MyTest(unittest.TestCase):
         data = json.loads(res.text)
 
         if data["success"]:
-            headers = list(data["payload"][0].keys())
-            print(data["payload"][0])
+            print(True if "Lithofacies_major" in data["payload"] else False)
+            print(data["payload"]["Lithofacies_major"])
 
-
+        # if data["success"]:
+        #     headers = list(data["payload"][0].keys())
+        #     print(data["payload"][0])

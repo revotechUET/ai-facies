@@ -88,16 +88,20 @@ NAMES = [
 ]
 
 OUTPUT = [
-    "Most",
+    "Most_likely_facies",
     "Most_Prob",
-    "Second_Most",
+    "Second_most_likely_facies",
     "Second_Most_Prob",
-    "Third_Most",
+    "Third_most_likely_facies"
     "Third_Most_Prob",
     "Uncertainty_flag",
+
+]
+
+OUTPUT_NUMPY_FORMAT = [
     "Lithofacies_major",
-    "Stacking_pattern",
     "GR_shape_code"
+    "Stacking_pattern",
 ]
 
 OUTPUT.extend(NAMES)
@@ -199,11 +203,11 @@ def calculate_uncertainty(row):
     if int(row["Sum"]) == 0:
         return 3
 
-    if row["Most"] and float(row[parse_slash(row["Most"])]) < 0.3:
+    if row["Most_likely_facies"] and float(row[parse_slash(row["Most_likely_facies"])]) < 0.3:
         return 1
 
-    if row["Second_Most"] and float(row[parse_slash(row["Most"])]) - float(
-            row[parse_slash(row["Second_Most"])]) < 0.1:
+    if row["Second_most_likely_facies"] and float(row[parse_slash(row["Most_likely_facies"])]) - float(
+            row[parse_slash(row["Second_most_likely_facies"])]) < 0.1:
         return 2
 
     return 0
@@ -249,7 +253,7 @@ def update_name(lst):
 
 
 def convert_data(data):
-    curve = ["Most", "Second_Most", "Third_Most"]
+    curve = ["Most_likely_facies", "Second_most_likely_facies", "Third_most_likely_facies"]
     prob = ["Most_Prob", "Second_Most_Prob", "Third_Most_Prob"]
 
     for row in data:
@@ -289,8 +293,10 @@ def convert_sample_by_sample(data, initial_data):
     for row in initial_data:
         tmp = {}
         for key in data[row["Unit_index"]].keys():
-            if key not in row.keys() and key in OUTPUT:
+            if key in OUTPUT:
                 tmp.update({key: data[row["Unit_index"]][key]})
+            elif key in OUTPUT_NUMPY_FORMAT:
+                tmp.update({key: int(data[row["Unit_index"]][key])})
         final.append(tmp)
     return final
 

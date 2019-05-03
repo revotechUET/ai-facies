@@ -58,7 +58,15 @@ def expert_rule(input_data):
     end = time.time()
     print(f"convert_sample_by_sample execution time: {round(end - start, 2)}s\n")
 
-    return final
+    output = {}
+
+    for keys in final[0].keys():
+        tmp = []
+        for row in final:
+            tmp.append(row[keys])
+        output.update({keys: deepcopy(tmp)})
+
+    return output
 
     # start = time.time()
     # utils_func.export_to_csv(initial_data, "csv/final.csv")
