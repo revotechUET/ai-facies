@@ -8,9 +8,17 @@ def prepare_data(data):
 
     optional = ["Biostratigraphy", "Lateral_proximity", "Special_lithology", "Core_depofacies", "Reliability"]
 
+    # sanity optional input
     for item in optional:
         if item not in data.keys():
             data.update({item: [-9999] * len(gr)})
+        else:
+            for i in range(len(data[item])):
+                if data[item][i]:
+                    print(i)
+                    data[item][i] = -9999
+            print(item)
+    # end
 
     shape_code = detect_label_shape_code(gr, v_mud, tvd)
     lithofacies = detect_lithofacies(gr, v_mud, tvd)
