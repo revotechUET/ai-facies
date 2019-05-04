@@ -4,4 +4,6 @@ COPY . /app
 
 WORKDIR /app
 
+RUN pip3 install --no-cache-dir flask-cors
+
 CMD ["python3", "index.py"]
