@@ -12,7 +12,7 @@ def unit_breakdown():
 
         for item in ["GR", "TVD"]:
             if not data or item not in data.keys():
-                return parse_response("Field Missing", False), 400
+                return parse_response("Field Missing", False, 400)
 
             gr = array(data["GR"])
             tvd = array(data["TVD"])
@@ -22,7 +22,7 @@ def unit_breakdown():
 
     except Exception as e:
         print(str(e))
-        return parse_response("Internal Server Error", False), 500
+        return parse_response("Internal Server Error", False, 500)
 
 
 @app.route("/api/v1/expert-rule", methods=["POST"])
@@ -32,7 +32,7 @@ def expert_rule():
 
         for item in ["GR", "MUD_VOLUME", "TVD", "Boundary_flag"]:
             if not data or item not in data.keys():
-                return parse_response("Field Missing", False), 400
+                return parse_response("Field Missing", False, 400)
         for key in data.keys():
             data.update({key: array(data[key])})
         res = controller.expert_rule(data)
@@ -40,19 +40,21 @@ def expert_rule():
 
     except Exception as e:
         print(str(e))
-        return parse_response("Internal Server Error", False), 500
+        return parse_response("Internal Server Error", False, 400)
 
 
-def parse_response(data, success=True):
+def parse_response(data, success=True, code=200):
     if success:
         return jsonify({
-            "success": True,
-            "payload": data
+            "reason": "Success",
+            "content": data,
+            "code": code
         })
     else:
         return jsonify({
-            "success": False,
-            "message": data
+            "reason": data,
+            "content": "",
+            "code": code
         })
 
 
