@@ -4,7 +4,6 @@ from numpy import array
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
 
 
 @app.route("/api/v1/unit-breakdown", methods=["POST"])
@@ -16,10 +15,10 @@ def unit_breakdown():
             if not data or item not in data.keys():
                 return parse_response("Field Missing", False, 400)
 
-            gr = array(data["GR"])
-            tvd = array(data["TVD"])
-            data = controller.unit_breakdown(gr, tvd)
-            print(data)
+        gr = array(data["GR"])
+        tvd = array(data["TVD"])
+        data = controller.unit_breakdown(gr, tvd)
+        print(data)
         return parse_response(list(data))
 
     except Exception as e:
