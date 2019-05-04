@@ -12,13 +12,15 @@ POST /api/v1/unit-breakdown
     Output: JSON Object
         - success
             {
-                payload: [0, 1, 1, 1, 0],
-                success: True
+                content: [0, 1, 1, 1, 0],
+                reason: "Success",
+                code: 200
             }
         - fail
             {
-                message: "",
-                success: False
+                content: "",
+                reason: "error",
+                code: [400, 500]
             }
 
 POST /api/v1/expert-rule
@@ -40,7 +42,7 @@ POST /api/v1/expert-rule
     Output: JSON Object
         - success
             {
-                payload: {
+                content: {
                     'Aggradational_Lacustrine_Shoreface': [],
                     'Aggradational_Marine_Shoreface': [], 
                     'Alluvial_Fan': [],
@@ -86,12 +88,14 @@ POST /api/v1/expert-rule
                     "GR_shape_code": [],
                     "Stacking_pattern": []
                 },
-                success: True
+                reason: "Success",
+                code: 200
             }
         - fail
             {
-                message: "",
-                success: False
+                code: [400, 500]
+                content: "",
+                reason: "error"
             }
 
 
