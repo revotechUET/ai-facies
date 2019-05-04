@@ -40,7 +40,7 @@ def expert_rule():
 
     except Exception as e:
         print(str(e))
-        return parse_response("Internal Server Error", False, 400)
+        return parse_response("Internal Server Error", False, 500)
 
 
 def parse_response(data, success=True, code=200):

@@ -1,6 +1,7 @@
 from .unit_matching import *
 import math
 
+
 def prepare_data(data):
     gr = data["GR"]
     v_mud = data["MUD_VOLUME"]
@@ -9,6 +10,11 @@ def prepare_data(data):
     optional = ["Biostratigraphy", "Lateral_proximity", "Special_lithology", "Core_depofacies", "Reliability"]
 
     # sanity optional input
+
+    for i in range(len(data["Reliability"])):
+        if (not data["Reliability"][i] or math.isnan(data["Reliability"][i])) and data["Biostratigraphy"][i] != -9999:
+            data["Reliability"][i] = 2
+
     for item in optional:
         if item not in data.keys():
             data.update({item: [-9999] * len(gr)})
