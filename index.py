@@ -4,6 +4,7 @@ from numpy import array
 from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route("/api/v1/unit-breakdown", methods=["POST"])
