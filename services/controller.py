@@ -90,13 +90,13 @@ def expert_rule(input_data):
     # print(f"export_to_csv execution time: {round(end - start, 2)}s\n")
 
 
+def filter_null(item):
+    if item == "null" or not item:
+        return False
+    return True
+
+
 def unit_breakdown(gr, tvd):
-    for data in gr:
-        if not data or data == "null":
-            data = None
-
-    for data in tvd:
-        if not data or data == "null":
-            data = None
-
+    gr = list(filter(filter_null, gr))
+    tvd = list(filter(filter_null, tvd))
     return ub(gr, tvd)
