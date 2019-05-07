@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from services import controller
-from numpy import array
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -35,14 +34,13 @@ def expert_rule():
         for item in ["GR", "MUD_VOLUME", "TVD", "Boundary_flag"]:
             if not data or item not in data.keys():
                 return parse_response("Field Missing", False, 400)
-        for key in data.keys():
-            data.update({key: array(data[key])})
+
         res = controller.expert_rule(data)
         return parse_response(res)
 
     except Exception as e:
         print(str(e))
-        return parse_response("Internal Server Error", False, 500)
+        return parse_response(str(e), False, 500)
 
 
 def parse_response(data, success=True, code=200):

@@ -286,6 +286,8 @@ def convert_data(data):
                     row.update({curve[i]: "", prob[i]: ""})
                 else:
                     row.update({curve[i]: lst[i]["curve"], prob[i]: lst[i]["prob"]})
+            else:
+                row.update({curve[i]: "Indeterminate", prob[i]: 0})
 
     for row in data:
         row.update({"Uncertainty_flag": calculate_uncertainty(row)})

@@ -5,13 +5,33 @@ from .special_lithology.special_lithology import special_lithology
 from .modifier_set1.modifier_set1 import modifier_set1
 from .modifier_set2.modifier_set2 import modifier_set2
 from .utilities import utils_func
-import traceback
+from numpy import array
 
 import time
 from copy import deepcopy
 
 
 def expert_rule(input_data):
+    pop_history = []
+    required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME"]
+    index = 0
+
+    print(input_data["Boundary_flag"])
+
+    while index < len(input_data["Boundary_flag"]):
+        for item in required:
+            if input_data[item][index] in utils_func.CLIENT_UNDEFINED or not input_data[item][index]:
+                print("Is Fuck Null")
+                for it in required:
+                    input_data[it].pop(index)
+                pop_history.append(index)
+                index -= 1
+                break
+        index += 1
+
+    for key in input_data.keys():
+        input_data.update({key: array(input_data[key])})
+
     print("Execution breakdown\n")
     start = time.time()
     data = prepare_data(input_data)
@@ -63,31 +83,27 @@ def expert_rule(input_data):
 
     output = {}
 
-    print("ok")
+    for keys in final[0].keys():
+        tmp = []
+        for row in final:
+            tmp.append(row[keys])
 
-    print(final[14000])
-    print(final[14000]["Most_likely_facies"])
-    print(type(final[14000]["Most_likely_facies"]))
+        if keys in ["Most_likely_facies", "Second_most_likely_facies", "Third_most_likely_facies"]:
+            for idx in pop_history:
+                tmp.insert(idx, 0)
 
-    # for keys in final[0].keys():
-    #     tmp = []
-    #     i = 0
-    #     for row in final:
-    #         tmp.append(row[keys])
-    #         print(i)
-    #         i += 1
-    #     output.update({keys: deepcopy(tmp)})
-    #     print(f"{keys} {len(output[keys])}")
-    #     tmp.clear()
-    #
-    print("ok1")
+        elif keys in ["Uncertainty_flag"]:
+            for idx in pop_history:
+                tmp.insert(idx, 3)
+
+        else:
+            for idx in pop_history:
+                tmp.insert(idx, 0)
+
+        output.update({keys: deepcopy(tmp)})
+        tmp.clear()
 
     return output
-
-    # start = time.time()
-    # utils_func.export_to_csv(initial_data, "csv/final.csv")
-    # end = time.time()
-    # print(f"export_to_csv execution time: {round(end - start, 2)}s\n")
 
 
 def filter_null(item):
@@ -104,12 +120,12 @@ def unit_breakdown(gr, tvd):
         if gr[i] == "null" or gr[i] == "NaN" or not gr[i]:
             gr.pop(i)
             tvd.pop(i)
-            pop_history.append(i)
+            pop_history.append(i + len(pop_history))
             i -= 1
         elif tvd[i] == "null" or not tvd[i]:
             tvd.pop(i)
             gr.pop(i)
-            pop_history.append(i)
+            pop_history.append(i + len(pop_history))
             i -= 1
         i += 1
 
