@@ -41,9 +41,7 @@ class MyTest(unittest.TestCase):
 
         data = json.loads(res.text)
 
-        if data["success"]:
-            print(True if "Lithofacies_major" in data["payload"] else False)
-            print(data["payload"]["Lithofacies_major"])
+        print(data)
 
         # if data["success"]:
         #     headers = list(data["payload"][0].keys())

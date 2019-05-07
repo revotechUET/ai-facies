@@ -5,6 +5,7 @@ from .special_lithology.special_lithology import special_lithology
 from .modifier_set1.modifier_set1 import modifier_set1
 from .modifier_set2.modifier_set2 import modifier_set2
 from .utilities import utils_func
+import traceback
 
 import time
 from copy import deepcopy
@@ -58,13 +59,28 @@ def expert_rule(input_data):
     end = time.time()
     print(f"convert_sample_by_sample execution time: {round(end - start, 2)}s\n")
 
+    utils_func.export_to_csv(final, "csv/final.csv")
+
     output = {}
 
-    for keys in final[0].keys():
-        tmp = []
-        for row in final:
-            tmp.append(row[keys])
-        output.update({keys: deepcopy(tmp)})
+    print("ok")
+
+    print(final[14000])
+    print(final[14000]["Most_likely_facies"])
+    print(type(final[14000]["Most_likely_facies"]))
+
+    # for keys in final[0].keys():
+    #     tmp = []
+    #     i = 0
+    #     for row in final:
+    #         tmp.append(row[keys])
+    #         print(i)
+    #         i += 1
+    #     output.update({keys: deepcopy(tmp)})
+    #     print(f"{keys} {len(output[keys])}")
+    #     tmp.clear()
+    #
+    print("ok1")
 
     return output
 
@@ -75,4 +91,12 @@ def expert_rule(input_data):
 
 
 def unit_breakdown(gr, tvd):
+    for data in gr:
+        if not data or data == "null":
+            data = None
+
+    for data in tvd:
+        if not data or data == "null":
+            data = None
+
     return ub(gr, tvd)

@@ -275,6 +275,9 @@ def convert_data(data):
         lst = sorted(lst, key=lambda it: it["point"], reverse=True)
         lst = update_name(lst)
 
+        if len(lst) < 3:
+            print(row["Unit_index"])
+
         for i in range(len(curve)):
             if len(lst) > i:
                 if len(row["Special_lithology"]) > 0:
