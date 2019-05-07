@@ -22,7 +22,8 @@ def expert_rule(input_data):
 
     while index < len(input_data["Boundary_flag"]):
         for item in required:
-            if (input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]):
+            if input_data[item][index] is None or (
+                    input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]):
                 for key in input_data.keys():
                     input_data[key].pop(index)
                 pop_history.append(index + len(pop_history))
@@ -65,8 +66,6 @@ def expert_rule(input_data):
     end = time.time()
     print(f"modifier_set1 execution time: {round(end - start, 2)}s\n")
 
-
-
     start = time.time()
     modifier_set2(data)
     end = time.time()
@@ -81,7 +80,6 @@ def expert_rule(input_data):
     final = utils_func.convert_sample_by_sample(data, initial_data)
     end = time.time()
     print(f"convert_sample_by_sample execution time: {round(end - start, 2)}s\n")
-
 
     output = {}
 
