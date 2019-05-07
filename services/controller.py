@@ -128,6 +128,9 @@ def unit_breakdown(gr, tvd):
             i -= 1
         i += 1
 
+    gr = array(gr)
+    tvd = array(tvd)
+
     lst = ub(gr, tvd)
 
     for ind in pop_history:

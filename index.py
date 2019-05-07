@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from services import controller
 from flask_cors import CORS
-from numpy import array
 
 app = Flask(__name__)
 CORS(app)
@@ -16,9 +15,7 @@ def unit_breakdown():
             if not data or item not in data.keys():
                 return parse_response("Field Missing", False, 400)
 
-        gr = array(data["GR"])
-        tvd = array(data["TVD"])
-        data = controller.unit_breakdown(gr, tvd)
+        data = controller.unit_breakdown(data["GR"], data["TVD"])
         print(data)
         return parse_response(list(data))
 
