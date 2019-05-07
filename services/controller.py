@@ -133,6 +133,8 @@ def unit_breakdown(gr, tvd):
 
     lst = ub(gr, tvd)
 
+    lst = list(lst)
+
     for ind in pop_history:
         lst.insert(ind, "null")
 
