@@ -16,16 +16,12 @@ def expert_rule(input_data):
     pop_history = []
     required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME"]
     index = 0
-
-    if math.isnan(input_data["TVD"][1]):
-        print("true")
-
     while index < len(input_data["Boundary_flag"]):
         for item in required:
             if input_data[item][index] is None or (
                     input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]):
                 for key in input_data.keys():
-                    if (len(input_data[key]) > 0):
+                    if len(input_data[key]) > 0:
                         input_data[key].pop(index)
                 pop_history.append(index + len(pop_history))
                 index -= 1

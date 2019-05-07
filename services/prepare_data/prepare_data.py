@@ -4,7 +4,6 @@ from ..utilities import utils_func
 
 
 def prepare_data(data):
-    print("ok2")
     gr = data["GR"]
     v_mud = data["MUD_VOLUME"]
     tvd = data["TVD"]
@@ -18,10 +17,8 @@ def prepare_data(data):
             i] != utils_func.UNDEFINED:
             data["Reliability"][i] = 2
 
-    print("ok1")
-
     for item in optional:
-        if item not in data.keys():
+        if item not in data.keys() or len(data[item]) == 0:
             data.update({item: [utils_func.UNDEFINED] * len(gr)})
 
         else:
@@ -30,8 +27,6 @@ def prepare_data(data):
                     data[item][i] = utils_func.UNDEFINED
 
     # end
-
-    print("ok")
 
     shape_code = detect_label_shape_code(gr, v_mud, tvd)
     lithofacies = detect_lithofacies(gr, v_mud, tvd)
