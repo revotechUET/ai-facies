@@ -19,9 +19,12 @@ def prepare_data(data):
         if item not in data.keys():
             data.update({item: [-9999] * len(gr)})
         else:
-            for i in range(len(data[item])):
-                if not data[item][i] or math.isnan(data[item][i]):
-                    data[item][i] = -9999
+            if len(data[item]) == 0:
+                data.update({item: [-9999] * len(gr)})
+            else:
+                for i in range(len(data[item])):
+                    if not data[item][i] or math.isnan(data[item][i]):
+                        data[item][i] = -9999
     # end
 
     shape_code = detect_label_shape_code(gr, v_mud, tvd)
