@@ -80,14 +80,16 @@ def expert_rule(input_data):
 
     output = {}
 
-    for keys in final[0].keys():
+    output_curves = utils_func.NAMES + utils_func.OUTPUT + utils_func.OUTPUT_NUMPY_FORMAT;
+
+    for keys in output_curves:
         tmp = []
         for row in final:
             tmp.append(row[keys])
 
         if keys in ["Most_likely_facies", "Second_most_likely_facies", "Third_most_likely_facies"]:
             for idx in pop_history:
-                tmp.insert(idx, 0)
+                tmp.insert(idx, "")
 
         elif keys in ["Uncertainty_flag"]:
             for idx in pop_history:
