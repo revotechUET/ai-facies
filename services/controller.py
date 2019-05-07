@@ -98,14 +98,24 @@ def filter_null(item):
 
 def unit_breakdown(gr, tvd):
     i = 0
+    pop_history = []
+
     while i < len(gr):
-        if gr[i] == "null" or not gr[i]:
+        if gr[i] == "null" or gr[i] == "NaN" or not gr[i]:
             gr.pop(i)
             tvd.pop(i)
+            pop_history.append(i)
             i -= 1
         elif tvd[i] == "null" or not tvd[i]:
             tvd.pop(i)
             gr.pop(i)
+            pop_history.append(i)
             i -= 1
         i += 1
-    return ub(gr, tvd)
+
+    lst = ub(gr, tvd)
+
+    for ind in pop_history:
+        lst.insert(ind, "null")
+
+    return lst

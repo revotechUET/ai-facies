@@ -117,6 +117,8 @@ GROUPS = [
 
 UNDEFINED = -9999
 
+CLIENT_UNDEFINED = ["NaN", "null"]
+
 
 def convert_name_to_number(data):
     tmp = deepcopy(CODE_TO_NAME)
