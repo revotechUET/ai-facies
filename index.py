@@ -24,7 +24,7 @@ def unit_breakdown():
 
     except Exception as e:
         print(str(e))
-        return parse_response("Internal Server Error", False, 500)
+        return parse_response(str(e), False, 500)
 
 
 @app.route("/api/v1/expert-rule", methods=["POST"])
