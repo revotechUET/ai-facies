@@ -25,7 +25,8 @@ def expert_rule(input_data):
             if input_data[item][index] is None or (
                     input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]):
                 for key in input_data.keys():
-                    input_data[key].pop(index)
+                    if (len(input_data[key]) > 0):
+                        input_data[key].pop(index)
                 pop_history.append(index + len(pop_history))
                 index -= 1
                 break
