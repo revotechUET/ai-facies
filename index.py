@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from services import controller
 from flask_cors import CORS
+from numpy import array
 
 app = Flask(__name__)
 CORS(app)

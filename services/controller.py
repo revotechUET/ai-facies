@@ -16,18 +16,17 @@ def expert_rule(input_data):
     required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME"]
     index = 0
 
-    print(input_data["Boundary_flag"])
-
     while index < len(input_data["Boundary_flag"]):
         for item in required:
-            if input_data[item][index] in utils_func.CLIENT_UNDEFINED or not input_data[item][index]:
-                print("Is Fuck Null")
+            if input_data[item][index] in utils_func.CLIENT_UNDEFINED:
                 for it in required:
                     input_data[it].pop(index)
-                pop_history.append(index)
+                pop_history.append(index + len(pop_history))
                 index -= 1
                 break
         index += 1
+
+    print(pop_history)
 
     for key in input_data.keys():
         input_data.update({key: array(input_data[key])})
