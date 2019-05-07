@@ -97,6 +97,15 @@ def filter_null(item):
 
 
 def unit_breakdown(gr, tvd):
-    gr = list(filter(filter_null, gr))
-    tvd = list(filter(filter_null, tvd))
+    i = 0
+    while i < len(gr):
+        if gr[i] == "null" or not gr[i]:
+            gr.pop(i)
+            tvd.pop(i)
+            i -= 1
+        elif tvd[i] == "null" or not tvd[i]:
+            tvd.pop(i)
+            gr.pop(i)
+            i -= 1
+        i += 1
     return ub(gr, tvd)
