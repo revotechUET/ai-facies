@@ -23,15 +23,15 @@ def find_max_radius_30(unit_index, data):
         return lst
 
     for i in range(unit_index, -1, -1):
-        if abs(float(data[i]["TVD"]) - float(
-                data[unit_index]["TVD"])) <= 30 and not len(data[i]["Special_lithology"]):
+        if abs(data[i]["TVD"] -
+               data[unit_index]["TVD"]) <= 30 and not len(data[i]["Special_lithology"]):
             lst.extend(find_max_curve(data[i]))
         else:
             break
 
     for i in range(unit_index + 1, len(data), 1):
-        if abs(float(data[i]["TVD"]) - float(
-                data[unit_index]["TVD"])) <= 30 and not len(data[i]["Special_lithology"]):
+        if abs(data[i]["TVD"] -
+               data[unit_index]["TVD"]) <= 30 and not len(data[i]["Special_lithology"]):
             lst.extend(find_max_curve(data[i]))
         else:
             break
@@ -196,4 +196,3 @@ def associated_facies(data, it):
             update_row(row, groups)
             row.update({"Facies_group": tmp})
 
-    utils_func.export_to_csv(data, f"csv/associated_facies{it}.csv")

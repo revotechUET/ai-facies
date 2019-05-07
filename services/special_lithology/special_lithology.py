@@ -57,4 +57,3 @@ def special_lithology(data):
         for lithology in lithos:
             update_row(data[i], lithology)
 
-    utils_func.export_to_csv(data, f"csv/special_lithology.csv")

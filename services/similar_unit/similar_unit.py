@@ -22,7 +22,7 @@ def handle_point(current_point, radius):
 
 def similar_unit(data):
     for i in range(len(data)):
-        if data[i]["Number_of_similar_units_50"] != 0 or int(data[i]["Core_depofacies"]) != -9999:
+        if data[i]["Number_of_similar_units_50"] != 0 or int(data[i]["Core_depofacies"]) != utils_func.UNDEFINED:
             unit_index = data[i]["Index_of_similar_units_50"]
             idx = data[i]["Unit_index"]
             unit_index.append(idx)
@@ -41,4 +41,3 @@ def similar_unit(data):
                 if name:
                     new_point = handle_point(data[i][name], "50-100")
                     data[i].update({name: new_point})
-    utils_func.export_to_csv(data, f"csv/similar_unit.csv")

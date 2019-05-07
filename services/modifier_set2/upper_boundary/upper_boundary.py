@@ -63,7 +63,7 @@ def pick_group(data):
 
 def update_row(row, group):
     points = []
-    sharp_boundary = int(row["Sharp_boundary"])
+    sharp_boundary = row["Sharp_boundary"]
 
     if group["name"] == "Fluvial":
         points = [[2, 2], [-1, -1], [-2, 0], [-1, 0], [-1, 0], ["x", -3]]
@@ -78,7 +78,7 @@ def update_row(row, group):
         points = [[-1, 0], [-2, -2], [-8, -2], [2, 2], [1, 1], [0, 0]]
 
     if group["name"] == "Shallow_Marine":
-        points = [[-5, -2], [-3, -2], [-8], [1, 1], [2, 2], [1, 1]]
+        points = [[-5, -2], [-3, -2], [-8, -8], [1, 1], [2, 2], [1, 1]]
 
     if group["name"] == "Deep_Marine":
         points = [[-7, -3], [-6, -6], ["x", "x"], [-1, 1], [0, 1], [2, 2]]
@@ -93,5 +93,3 @@ def upper_boundary(data, it):
         if group:
             update_row(row, group)
             row.update({"Facies_above": group["name"] if group else None})
-
-    utils_func.export_to_csv(data, f"csv/upper_boundary{it}.csv")

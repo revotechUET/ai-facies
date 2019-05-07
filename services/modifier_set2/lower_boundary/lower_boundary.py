@@ -94,4 +94,3 @@ def lower_boundary(data, it):
             update_row(row, group)
             row.update({"Facies_below": group["name"] if group else None})
 
-    utils_func.export_to_csv(data, f"csv/lower_boundary{it}.csv")

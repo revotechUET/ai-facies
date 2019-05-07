@@ -45,4 +45,3 @@ def vertical_proximity(data):
             "Marine_Turbidite": update_point.update_marine_turbidite(row),
             "Distal_Marine_Turbidites": update_point.update_distal_marine_turbidites(row),
             "Marine_Deepwater": update_point.update_marine_deepwater(row)})
-    utils_func.export_to_csv(data, f"csv/vertical_proximity.csv")

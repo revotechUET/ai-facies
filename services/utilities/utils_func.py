@@ -179,7 +179,9 @@ def get_max_by_key(key, data):
 
 
 def update_row_group(group_name, row, point):
+    print(group_name)
     for depofacy in get_group_depofacies(group_name):
+        print(depofacy)
         name = map_core_depofacies_code_to_name(depofacy)
         if int(row[name]) > 0:
             if point == "x":
@@ -205,11 +207,11 @@ def calculate_uncertainty(row):
     if int(row["Sum"]) == 0:
         return 3
 
-    if row["Most_likely_facies"] and float(row[parse_slash(row["Most_likely_facies"])]) < 0.3:
+    if row["Most_likely_facies"] and row[parse_slash(row["Most_likely_facies"])] < 0.3:
         return 1
 
-    if row["Second_most_likely_facies"] and float(row[parse_slash(row["Most_likely_facies"])]) - float(
-            row[parse_slash(row["Second_most_likely_facies"])]) < 0.1:
+    if row["Second_most_likely_facies"] and row[parse_slash(row["Most_likely_facies"])] - row[
+        parse_slash(row["Second_most_likely_facies"])] < 0.1:
         return 2
 
     return 0
@@ -267,13 +269,13 @@ def convert_data(data):
     for row in data:
         for key, value in CODE_TO_NAME.items():
             if int(row["Sum"]) != 0:
-                row.update({value: float(row[value]) / float(row["Sum"])})
+                row.update({value: row[value] / row["Sum"]})
 
     for row in data:
         lst = []
         for key, value in CODE_TO_NAME.items():
-            if float(row[value]) != 0:
-                lst.append({"name": value, "point": float(row[value])})
+            if row[value] != 0:
+                lst.append({"name": value, "point": row[value]})
         lst = sorted(lst, key=lambda it: it["point"], reverse=True)
         lst = update_name(lst)
 

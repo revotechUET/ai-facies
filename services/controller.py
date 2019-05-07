@@ -6,6 +6,7 @@ from .modifier_set1.modifier_set1 import modifier_set1
 from .modifier_set2.modifier_set2 import modifier_set2
 from .utilities import utils_func
 from numpy import array
+import math
 
 import time
 from copy import deepcopy
@@ -16,17 +17,18 @@ def expert_rule(input_data):
     required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME"]
     index = 0
 
+    if math.isnan(input_data["TVD"][1]):
+        print("true")
+
     while index < len(input_data["Boundary_flag"]):
         for item in required:
-            if input_data[item][index] in utils_func.CLIENT_UNDEFINED:
-                for it in required:
-                    input_data[it].pop(index)
+            if (input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]):
+                for key in input_data.keys():
+                    input_data[key].pop(index)
                 pop_history.append(index + len(pop_history))
                 index -= 1
                 break
         index += 1
-
-    print(pop_history)
 
     for key in input_data.keys():
         input_data.update({key: array(input_data[key])})
@@ -63,6 +65,8 @@ def expert_rule(input_data):
     end = time.time()
     print(f"modifier_set1 execution time: {round(end - start, 2)}s\n")
 
+
+
     start = time.time()
     modifier_set2(data)
     end = time.time()
@@ -78,7 +82,6 @@ def expert_rule(input_data):
     end = time.time()
     print(f"convert_sample_by_sample execution time: {round(end - start, 2)}s\n")
 
-    utils_func.export_to_csv(final, "csv/final.csv")
 
     output = {}
 

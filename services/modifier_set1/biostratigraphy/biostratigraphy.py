@@ -10,4 +10,3 @@ def biostratigraphy(data):
         row.update(update_point.update_marginal_marine(row))
         row.update(update_point.update_shallow_marine(row))
         row.update(update_point.update_deep_marine(row))
-    utils_func.export_to_csv(data, f"csv/biostratigraphy.csv")

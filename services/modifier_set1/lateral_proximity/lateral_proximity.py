@@ -4,7 +4,7 @@ from ...utilities import utils_func
 
 def lateral_proximity(data):
     for row in data:
-        if row["Lateral_proximity"] != "-9999":
+        if row["Lateral_proximity"] != utils_func.UNDEFINED:
             row.update({
                 "Alluvial_Fan": update_point.update_alluvial_fan(row),
                 "Fluvial_Channel": update_point.update_fluvial_channel(row),
@@ -46,4 +46,3 @@ def lateral_proximity(data):
                 "Marine_Turbidite": update_point.update_marine_turbidite(row),
                 "Distal_Marine_Turbidites": update_point.update_distal_marine_turbidites(row),
                 "Marine_Deepwater": update_point.update_marine_deepwater(row)})
-    utils_func.export_to_csv(data, f"csv/lateral_proximity.csv")

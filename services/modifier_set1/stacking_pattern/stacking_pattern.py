@@ -10,4 +10,3 @@ def stacking_pattern(data):
         update_point.update_marginal_marine(row)
         update_point.update_shallow_lacustrine(row)
         update_point.update_shallow_marine(row)
-    utils_func.export_to_csv(data, "csv/stacking_pattern.csv")
