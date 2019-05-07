@@ -92,7 +92,7 @@ OUTPUT = [
     "Most_Prob",
     "Second_most_likely_facies",
     "Second_Most_Prob",
-    "Third_most_likely_facies"
+    "Third_most_likely_facies",
     "Third_Most_Prob",
     "Uncertainty_flag",
 
@@ -100,11 +100,12 @@ OUTPUT = [
 
 OUTPUT_NUMPY_FORMAT = [
     "Lithofacies_major",
-    "GR_shape_code"
+    "GR_shape_code",
     "Stacking_pattern",
 ]
 
 OUTPUT.extend(NAMES)
+
 
 GROUPS = [
     "Fluvial",
@@ -179,9 +180,7 @@ def get_max_by_key(key, data):
 
 
 def update_row_group(group_name, row, point):
-    print(group_name)
     for depofacy in get_group_depofacies(group_name):
-        print(depofacy)
         name = map_core_depofacies_code_to_name(depofacy)
         if int(row[name]) > 0:
             if point == "x":
@@ -278,9 +277,6 @@ def convert_data(data):
                 lst.append({"name": value, "point": row[value]})
         lst = sorted(lst, key=lambda it: it["point"], reverse=True)
         lst = update_name(lst)
-
-        if len(lst) < 3:
-            print(row["Unit_index"])
 
         for i in range(len(curve)):
             if len(lst) > i:

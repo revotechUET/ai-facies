@@ -16,7 +16,6 @@ def unit_breakdown():
                 return parse_response("Field Missing", False, 400)
 
         data = controller.unit_breakdown(data["GR"], data["TVD"])
-        print(data)
         return parse_response(list(data))
 
     except Exception as e:
@@ -57,4 +56,4 @@ def parse_response(data, success=True, code=200):
 
 
 if __name__ == '__main__':
-    app.run(port=9999, host="0.0.0.0", debug=True)
+    app.run(port=9999, host="0.0.0.0")

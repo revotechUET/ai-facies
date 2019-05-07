@@ -28,8 +28,6 @@ def detect_lithofacies(gr, v_mud, tvd):
 
 
 def detect_sharp_boundary(gr, tvd):
-    print(len(gr))
-    print(len(tvd))
     gr_smooth = window_smooth(gr, window_len=14, window='hamming')
     changing_direction_point_flag = UnitBreaker().detect_changing_direction_point(x=gr_smooth, epsilon=0.05,
                                                                                   multiplier=7)

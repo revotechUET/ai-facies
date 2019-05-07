@@ -80,7 +80,7 @@ def expert_rule(input_data):
 
     output = {}
 
-    output_curves = utils_func.NAMES + utils_func.OUTPUT + utils_func.OUTPUT_NUMPY_FORMAT;
+    output_curves = utils_func.OUTPUT + utils_func.OUTPUT_NUMPY_FORMAT
 
     for keys in output_curves:
         tmp = []

@@ -5,9 +5,6 @@ from .associated_facies.associated_facies import associated_facies
 
 def modifier_set2(data):
     for i in range(0, 2):
-        print("0")
         associated_facies(data, i + 1)
-        print("1")
         lower_boundary(data, i + 1)
-        print("2")
         upper_boundary(data, i + 1)
