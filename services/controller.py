@@ -87,17 +87,8 @@ def expert_rule(input_data):
         for row in final:
             tmp.append(row[keys])
 
-        if keys in ["Most_likely_facies", "Second_most_likely_facies", "Third_most_likely_facies"]:
-            for idx in pop_history:
-                tmp.insert(idx, "")
-
-        elif keys in ["Uncertainty_flag"]:
-            for idx in pop_history:
-                tmp.insert(idx, 3)
-
-        else:
-            for idx in pop_history:
-                tmp.insert(idx, 0)
+        for idx in pop_history:
+            tmp.insert(idx, "")
 
         output.update({keys: deepcopy(tmp)})
         tmp.clear()
