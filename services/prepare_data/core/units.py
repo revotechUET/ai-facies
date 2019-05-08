@@ -1,6 +1,6 @@
 import numpy as np
 from .utils import compute_number_of_changing_direction_time
-
+from .utils import compute_rate_of_change
 
 class UnitBreaker(object):
     @staticmethod
@@ -380,7 +380,7 @@ class UnitBreaker(object):
                     else:
                         if compute_number_of_changing_direction_time(gr_set) / thickness > change_sign_threshold \
                                 and variance[idx_set[0]] > variance_threshold \
-                                and lithofacies[i] != 1:
+                                and lithofacies[i] != 1 and compute_rate_of_change(gr_set) > roc_threshold:
                             labels[idx_set] = 3
                         elif delta_max_first_min_last > gr_threshold and abs(delta_avg) > gr_avg_threshold:
                             labels[idx_set] = 1
