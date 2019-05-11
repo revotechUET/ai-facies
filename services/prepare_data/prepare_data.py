@@ -12,11 +12,6 @@ def prepare_data(data):
 
     # sanity optional input
 
-    for i in range(len(data["Reliability"])):
-        if (not data["Reliability"][i] or math.isnan(data["Reliability"][i])) and data["Biostratigraphy"][
-            i] != utils_func.UNDEFINED:
-            data["Reliability"][i] = 2
-
     for item in optional:
         if item not in data.keys() or len(data[item]) == 0:
             data.update({item: [utils_func.UNDEFINED] * len(gr)})
@@ -25,6 +20,11 @@ def prepare_data(data):
             for i in range(len(data[item])):
                 if not data[item][i] or math.isnan(data[item][i]):
                     data[item][i] = utils_func.UNDEFINED
+
+    for i in range(len(data["Reliability"])):
+        if (not data["Reliability"][i] or math.isnan(data["Reliability"][i])) and \
+                data["Biostratigraphy"][i] != utils_func.UNDEFINED:
+            data["Reliability"][i] = 2
 
     # end
 
