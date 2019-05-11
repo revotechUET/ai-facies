@@ -1,5 +1,4 @@
 from . import update_point
-from ...utilities import utils_func
 
 
 def biostratigraphy(data):

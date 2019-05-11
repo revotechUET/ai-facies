@@ -12,7 +12,6 @@ def init_alluvial_fan(data_set):
                 point = 4
             else:
                 point = 3
-            print(point)
     return point + additional_point if point else 0
 
 

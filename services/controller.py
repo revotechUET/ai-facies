@@ -19,7 +19,8 @@ def expert_rule(input_data):
     while index < len(input_data["Boundary_flag"]):
         for item in required:
             if input_data[item][index] is None or (
-                    input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]):
+                    input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]) or \
+                    input_data[item][index] == utils_func.UNDEFINED:
                 for key in input_data.keys():
                     if len(input_data[key]) > 0:
                         input_data[key].pop(index)

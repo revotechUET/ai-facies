@@ -11,7 +11,6 @@ def prepare_data(data):
     optional = ["Biostratigraphy", "Lateral_proximity", "Special_lithology", "Core_depofacies", "Reliability"]
 
     # sanity optional input
-
     for item in optional:
         if item not in data.keys() or len(data[item]) == 0:
             data.update({item: [utils_func.UNDEFINED] * len(gr)})
@@ -22,8 +21,10 @@ def prepare_data(data):
                     data[item][i] = utils_func.UNDEFINED
 
     for i in range(len(data["Reliability"])):
-        if (not data["Reliability"][i] or math.isnan(data["Reliability"][i])) and \
-                data["Biostratigraphy"][i] != utils_func.UNDEFINED:
+        if (data["Reliability"][i] is None or math.isnan(data["Reliability"][i]) or data["Reliability"][
+            i] == utils_func.UNDEFINED or data["Reliability"][i] in utils_func.CLIENT_UNDEFINED) and \
+                (data["Biostratigraphy"][i] != utils_func.UNDEFINED and data["Biostratigraphy"][
+                    i] not in utils_func.CLIENT_UNDEFINED):
             data["Reliability"][i] = 2
 
     # end
@@ -32,7 +33,8 @@ def prepare_data(data):
     lithofacies = detect_lithofacies(gr, v_mud, tvd)
     sharp_boundary = detect_sharp_boundary(gr, tvd)
     stacking_pattern = detect_stacking_pattern(gr, tvd)
-    boundary = select_boundary(gr, tvd)
+    boundary = data["Boundary_flag"]
+    boundary[len(boundary) - 1] = 1
     unit_index = detect_unit_index(boundary)
     unit_thick = detect_unit_length(boundary, tvd)
 

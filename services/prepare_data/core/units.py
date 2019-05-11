@@ -2,6 +2,7 @@ import numpy as np
 from .utils import compute_number_of_changing_direction_time
 from .utils import compute_rate_of_change
 
+
 class UnitBreaker(object):
     @staticmethod
     def detect_changing_direction_point(x, epsilon=0.02, multiplier=2, *args, **kwargs):
@@ -369,7 +370,6 @@ class UnitBreaker(object):
                     delta_min_first_max_last = min_first - max_last
                     delta_avg = avg_first - avg_last
                     thickness = tvd[idx_set[-1]] - tvd[idx_set[0]]
-
                     if thickness < tvd_threshold:
                         if delta_max_first_min_last > gr_threshold and abs(delta_avg) > gr_avg_threshold:
                             labels[idx_set] = 1
@@ -527,20 +527,20 @@ class UnitBreaker(object):
 
         for i in range(n_samples):
             idx_set.append(i)
-            if boundary_flags[i] != 0 or i == n_samples - 1:
+            if boundary_flags[i] == 1 or i == n_samples - 1:
                 sub_idx_set = []
                 similar_unit_index = []
                 for j in range(i + 1, n_samples):
                     sub_idx_set.append(j)
-                    if boundary_flags[j] != 0 or j == n_samples - 1:
+                    if boundary_flags[j] == 1 or j == n_samples - 1:
                         current_unit_id = idx_set[0]
                         comparison_unit_id = sub_idx_set[0]
                         if abs(tvd[comparison_unit_id] - tvd[current_unit_id]) >= min_depth and abs(
                                 tvd[comparison_unit_id] - tvd[current_unit_id]) <= max_depth:
-                            if lithofacies[current_unit_id] == lithofacies[comparison_unit_id] and gr_shape_code[
-                                current_unit_id] == gr_shape_code[comparison_unit_id]:
-                                if thickness[current_unit_id] * 0.5 < thickness[comparison_unit_id] and thickness[
-                                    comparison_unit_id] < thickness[current_unit_id] * 1.5:
+                            if lithofacies[current_unit_id] == lithofacies[comparison_unit_id] and \
+                                    gr_shape_code[current_unit_id] == gr_shape_code[comparison_unit_id]:
+                                if thickness[current_unit_id] * 0.5 < thickness[comparison_unit_id] < \
+                                        thickness[current_unit_id] * 1.5:
                                     score = 0
                                     n_current_unit_samples = len(idx_set)
                                     n_comparision_unit_samples = len(sub_idx_set)
@@ -551,7 +551,6 @@ class UnitBreaker(object):
                                         gr[idx_set[int(n_current_unit_samples * 0.75)]],
                                         gr[idx_set[-1]]
                                     ])
-
                                     comparison_unit_resamples = np.array([
                                         gr[sub_idx_set[0]],
                                         gr[sub_idx_set[int(n_comparision_unit_samples * 0.25)]],
