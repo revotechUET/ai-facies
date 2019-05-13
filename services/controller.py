@@ -59,6 +59,12 @@ def expert_rule(input_data):
     end = time.time()
     print(f"special_lithology execution time: {round(end - start, 2)}s\n")
 
+    additional_point = 10
+    for row in data:
+        for key in utils_func.NAMES:
+            if row[key] > 0:
+                row[key] += additional_point
+
     start = time.time()
     modifier_set1(data)
     end = time.time()
