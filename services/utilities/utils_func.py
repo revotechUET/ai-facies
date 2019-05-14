@@ -144,7 +144,7 @@ def remove_duplicate(arr):
 
 def map_core_depofacies_code_to_name(code):
     try:
-        return CODE_TO_NAME[code]
+        return CODE_TO_NAME[str(code)]
     except KeyError:
         return None
 
