@@ -24,6 +24,9 @@ class MyTest(unittest.TestCase):
 
         data = json.loads(res.text)
 
+        df = pd.DataFrame(data["content"], columns=["Boundary_flag"])
+        df.to_csv("./csv/debug_ub.csv", index=False)
+
         print(data)
 
     def test_expert_rule(self):
