@@ -4,7 +4,7 @@ from ..utilities import utils_func
 def find_unit_core_depofacies(unit_index, data_list):
     codes = []
     for u in unit_index:
-        code = data_list[int(u)]["Core_depofacies"]
+        code = data_list[u]["Core_depofacies"]
         codes.append(code)
     return codes
 

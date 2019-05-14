@@ -144,7 +144,7 @@ def remove_duplicate(arr):
 
 def map_core_depofacies_code_to_name(code):
     try:
-        return CODE_TO_NAME[code]
+        return CODE_TO_NAME[str(code)]
     except KeyError:
         return None
 
@@ -339,7 +339,7 @@ def simplify_data(data):
     simplified_data = []
 
     for row in data:
-        if int(row["Core_depofacies"]) != UNDEFINED:
+        if row["Core_depofacies"] != UNDEFINED:
             core_depofacies.append(row["Core_depofacies"])
 
         if int(row["Reliability"]) != UNDEFINED:
