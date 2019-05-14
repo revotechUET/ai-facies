@@ -13,26 +13,26 @@ from copy import deepcopy
 
 
 def expert_rule(input_data):
-    # # sanitize input
-    # pop_history = []
-    # required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME"]
-    # index = 0
-    # while index < len(input_data["Boundary_flag"]):
-    #     for item in required:
-    #         if input_data[item][index] is None or (
-    #                 input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]) or \
-    #                 input_data[item][index] == utils_func.UNDEFINED:
-    #             for key in input_data.keys():
-    #                 if len(input_data[key]) > 0:
-    #                     input_data[key].pop(index)
-    #             pop_history.append(index + len(pop_history))
-    #             index -= 1
-    #             break
-    #     index += 1
-    #
-    # for key in input_data.keys():
-    #     input_data.update({key: array(input_data[key])})
-    # # end sanitize
+    # sanitize input
+    pop_history = []
+    required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME"]
+    index = 0
+    while index < len(input_data["Boundary_flag"]):
+        for item in required:
+            if input_data[item][index] is None or (
+                    input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]) or \
+                    input_data[item][index] == utils_func.UNDEFINED:
+                for key in input_data.keys():
+                    if len(input_data[key]) > 0:
+                        input_data[key].pop(index)
+                pop_history.append(index + len(pop_history))
+                index -= 1
+                break
+        index += 1
+
+    for key in input_data.keys():
+        input_data.update({key: array(input_data[key])})
+    # end sanitize
 
     print("Execution breakdown\n")
     start = time.time()
@@ -93,11 +93,11 @@ def expert_rule(input_data):
 
     for keys in output_curves:
         tmp = []
-        # for row in final:
-        #     tmp.append(row[keys])
-        #
-        # for idx in pop_history:
-        #     tmp.insert(idx, "")
+        for row in final:
+            tmp.append(row[keys])
+
+        for idx in pop_history:
+            tmp.insert(idx, "")
 
         output.update({keys: deepcopy(tmp)})
         tmp.clear()
@@ -112,21 +112,21 @@ def filter_null(item):
 
 
 def unit_breakdown(gr, tvd):
-    # i = 0
-    # pop_history = []
-    #
-    # while i < len(gr):
-    #     if gr[i] == "null" or gr[i] == "NaN" or not gr[i]:
-    #         gr.pop(i)
-    #         tvd.pop(i)
-    #         pop_history.append(i + len(pop_history))
-    #         i -= 1
-    #     elif tvd[i] == "null" or not tvd[i]:
-    #         tvd.pop(i)
-    #         gr.pop(i)
-    #         pop_history.append(i + len(pop_history))
-    #         i -= 1
-    #     i += 1
+    i = 0
+    pop_history = []
+
+    while i < len(gr):
+        if gr[i] == "null" or gr[i] == "NaN" or not gr[i]:
+            gr.pop(i)
+            tvd.pop(i)
+            pop_history.append(i + len(pop_history))
+            i -= 1
+        elif tvd[i] == "null" or not tvd[i]:
+            tvd.pop(i)
+            gr.pop(i)
+            pop_history.append(i + len(pop_history))
+            i -= 1
+        i += 1
 
     gr = array(gr)
     tvd = array(tvd)
@@ -135,7 +135,7 @@ def unit_breakdown(gr, tvd):
 
     lst = list(lst)
 
-    # for ind in pop_history:
-    #     lst.insert(ind, "null")
+    for ind in pop_history:
+        lst.insert(ind, "null")
 
     return lst
