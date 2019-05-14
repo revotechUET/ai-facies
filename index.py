@@ -45,7 +45,8 @@ def parse_response(data, success=True, code=200):
         return jsonify({
             "reason": "Success",
             "content": data,
-            "code": code
+            "code": code,
+            "check-new": "ok"
         })
     else:
         return jsonify({
