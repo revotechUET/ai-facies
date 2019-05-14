@@ -10,24 +10,24 @@ def prepare_data(data):
 
     optional = ["Biostratigraphy", "Lateral_proximity", "Special_lithology", "Core_depofacies", "Reliability"]
 
-    # sanity optional input
-    for item in optional:
-        if item not in data.keys() or len(data[item]) == 0:
-            data.update({item: [utils_func.UNDEFINED] * len(gr)})
-
-        else:
-            for i in range(len(data[item])):
-                if not data[item][i] or math.isnan(data[item][i]):
-                    data[item][i] = utils_func.UNDEFINED
-
-    for i in range(len(data["Reliability"])):
-        if (data["Reliability"][i] is None or math.isnan(data["Reliability"][i]) or data["Reliability"][
-            i] == utils_func.UNDEFINED or data["Reliability"][i] in utils_func.CLIENT_UNDEFINED) and \
-                (data["Biostratigraphy"][i] != utils_func.UNDEFINED and data["Biostratigraphy"][
-                    i] not in utils_func.CLIENT_UNDEFINED):
-            data["Reliability"][i] = 2
-
-    # end
+    # # sanity optional input
+    # for item in optional:
+    #     if item not in data.keys() or len(data[item]) == 0:
+    #         data.update({item: [utils_func.UNDEFINED] * len(gr)})
+    #
+    #     else:
+    #         for i in range(len(data[item])):
+    #             if not data[item][i] or math.isnan(data[item][i]):
+    #                 data[item][i] = utils_func.UNDEFINED
+    #
+    # for i in range(len(data["Reliability"])):
+    #     if (data["Reliability"][i] is None or math.isnan(data["Reliability"][i]) or data["Reliability"][
+    #         i] == utils_func.UNDEFINED or data["Reliability"][i] in utils_func.CLIENT_UNDEFINED) and \
+    #             (data["Biostratigraphy"][i] != utils_func.UNDEFINED and data["Biostratigraphy"][
+    #                 i] not in utils_func.CLIENT_UNDEFINED):
+    #         data["Reliability"][i] = 2
+    #
+    # # end
 
     shape_code = detect_label_shape_code(gr, v_mud, tvd)
     lithofacies = detect_lithofacies(gr, v_mud, tvd)
