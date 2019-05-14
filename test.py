@@ -27,7 +27,7 @@ class MyTest(unittest.TestCase):
         print(data)
 
     def test_expert_rule(self):
-        data = pd.read_csv("./csv/initial_data.csv")
+        data = pd.read_csv("csv/initial_data.csv")
 
         dct = {}
 

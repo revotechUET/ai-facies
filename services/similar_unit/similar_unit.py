@@ -4,7 +4,7 @@ from ..utilities import utils_func
 def find_unit_core_depofacies(unit_index, data_list):
     codes = []
     for u in unit_index:
-        code = data_list[u]["Core_depofacies"]
+        code = data_list[int(u)]["Core_depofacies"]
         codes.append(code)
     return codes
 
@@ -22,11 +22,10 @@ def handle_point(current_point, radius):
 
 def similar_unit(data):
     for i in range(len(data)):
-        if data[i]["Number_of_similar_units_50"] != 0 or data[i]["Core_depofacies"] != utils_func.UNDEFINED:
+        if data[i]["Number_of_similar_units_50"] != 0 or int(data[i]["Core_depofacies"]) != utils_func.UNDEFINED:
             unit_index = data[i]["Index_of_similar_units_50"]
-            if data[i]["Core_depofacies"] != utils_func.UNDEFINED:
-                idx = data[i]["Unit_index"]
-                unit_index.append(idx)
+            idx = data[i]["Unit_index"]
+            unit_index.append(idx)
             codes = find_unit_core_depofacies(unit_index, data)
             for code in codes:
                 name = utils_func.map_core_depofacies_code_to_name(code)

@@ -13,7 +13,6 @@ from copy import deepcopy
 
 
 def expert_rule(input_data):
-    # sanitize input
     pop_history = []
     required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME"]
     index = 0
@@ -32,7 +31,6 @@ def expert_rule(input_data):
 
     for key in input_data.keys():
         input_data.update({key: array(input_data[key])})
-    # end sanitize
 
     print("Execution breakdown\n")
     start = time.time()

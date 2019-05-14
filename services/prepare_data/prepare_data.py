@@ -35,7 +35,6 @@ def prepare_data(data):
     stacking_pattern = detect_stacking_pattern(gr, tvd)
     boundary = data["Boundary_flag"]
     boundary[len(boundary) - 1] = 1
-    boundary[0] = 0
     unit_index = detect_unit_index(boundary)
     unit_thick = detect_unit_length(boundary, tvd)
 

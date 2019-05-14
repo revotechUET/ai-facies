@@ -98,7 +98,6 @@ def detect_unit_length(boundary_flags, tvd):
     for i in range(len(boundary_flags)):
         if boundary_flags[i] == 1:
             thick = tvd[i] - tvd[bound]
-
             for j in range(bound + 1 if bound > 0 else 0, i + 1):
                 unit_thick.append(thick)
                 bound = i
