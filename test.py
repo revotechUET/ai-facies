@@ -2,7 +2,8 @@ import unittest
 import pandas as pd
 import requests
 import json
-from csv import DictWriter
+from services.utilities import utils_func
+from copy import deepcopy
 
 
 class MyTest(unittest.TestCase):
@@ -44,7 +45,20 @@ class MyTest(unittest.TestCase):
 
         data = json.loads(res.text)
 
-        print(data)
+        data = data["content"]
+
+        tmp = []
+        for i in range(len(data["Uncertainty_flag"])):
+            t = {}
+            for key in data.keys():
+                t.update({key: data[key][i]})
+
+            tmp.append(deepcopy(t))
+
+        utils_func.export_to_csv(tmp, "csv/T2X.csv")
+        # df.to_csv("csv/T2X-df.csv", index=False)
+
+        # print(data)
 
         # if data["success"]:
         #     headers = list(data["payload"][0].keys())
