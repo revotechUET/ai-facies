@@ -87,18 +87,26 @@ def expert_rule(input_data):
 
     output = {}
 
-    output_curves = utils_func.OUTPUT + utils_func.OUTPUT_NUMPY_FORMAT
+    output_curves = utils_func.OUTPUT_NUMPY_FORMAT
+
+    output_curves.append("Boundary_flag")
+    output_curves.append("TVD")
+    output_curves.append("GR")
+    output_curves.append("Unit_index")
 
     for keys in output_curves:
         tmp = []
         for row in final:
             tmp.append(row[keys])
-
         for idx in pop_history:
             tmp.insert(idx, "")
 
         output.update({keys: deepcopy(tmp)})
         tmp.clear()
+
+    for key in output:
+        print(output[key])
+        print(key)
 
     return output
 
