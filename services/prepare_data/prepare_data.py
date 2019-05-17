@@ -16,11 +16,9 @@ def prepare_data(data):
     boundary = data["Boundary_flag"]
     boundary[len(boundary) - 1] = 1
     boundary[0] = 0
-<<<<<<< HEAD
-=======
 
     # boundary = select_boundary(gr, tvd)
->>>>>>> master
+
     unit_index = detect_unit_index(boundary)
     unit_thick = detect_unit_length(boundary, tvd)
 
