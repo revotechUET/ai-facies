@@ -13,7 +13,7 @@ from copy import deepcopy
 
 
 def expert_rule(input_data):
-    # sanity optional input
+    # sanitizing input
     pop_history = []
     required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME", "Depth"]
     index = 0
@@ -52,7 +52,7 @@ def expert_rule(input_data):
                     i] not in utils_func.CLIENT_UNDEFINED):
             input_data["Reliability"][i] = 2
 
-    # end
+    # end sanitizing input
 
     print("Execution breakdown\n")
     start = time.time()

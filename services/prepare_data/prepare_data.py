@@ -13,10 +13,11 @@ def prepare_data(data):
     lithofacies = detect_lithofacies(gr, v_mud, tvd)
     sharp_boundary = detect_sharp_boundary(gr, tvd)
     stacking_pattern = detect_stacking_pattern(gr, tvd)
-    # boundary = data["Boundary_flag"]
-    # boundary[len(boundary) - 1] = 1
+    boundary = data["Boundary_flag"]
+    boundary[len(boundary) - 1] = 1
+    boundary[0] = 0
 
-    boundary = select_boundary(gr, tvd)
+    # boundary = select_boundary(gr, tvd)
     unit_index = detect_unit_index(boundary)
     unit_thick = detect_unit_length(boundary, tvd)
 
