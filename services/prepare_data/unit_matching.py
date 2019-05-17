@@ -39,7 +39,7 @@ def detect_sharp_boundary(gr, tvd):
     return sharp_boundary
 
 
-def detect_label_shape_code(gr, v_mud, tvd):
+def detect_label_shape_code(gr, v_mud, tvd, md):
     gr_smooth = window_smooth(gr, window_len=14, window='hamming')
     changing_direction_point_flag = UnitBreaker().detect_changing_direction_point(x=gr_smooth, epsilon=0.05,
                                                                                   multiplier=7)
@@ -67,10 +67,14 @@ def detect_label_shape_code(gr, v_mud, tvd):
             variance_2[idx_set] = compute_variance_base_on_slope_line(gr_set)
             idx_set = []
 
-    labels = UnitBreaker().label_shape_code(gr=gr, boundary_flags=boundary_flags, tvd=tvd, lithofacies=lithofacies,
+    labels = UnitBreaker().label_shape_code(gr=gr, boundary_flags=boundary_flags, tvd=tvd, md=md, lithofacies=lithofacies,
                                             variance=variance_2, gr_threshold=8, gr_avg_threshold=6,
                                             tvd_threshold=2,
+<<<<<<< HEAD
                                             roc_threshold=0.25, variance_threshold=40, change_sign_threshold=3)
+=======
+                                            roc_threshold=0.25, variance_threshold=40, change_sign_threshold=2)
+>>>>>>> master
     return labels
 
 
@@ -122,7 +126,7 @@ def find_similar_unit(gr, tvd, boundary_flags, lithofacies, gr_shape_code, thick
         idx_set.append(i)
         if boundary_flags[i] == 1 or i == n_samples - 1:
             gr_set = gr[idx_set].copy()
-            zcr[idx_set] = utils.compute_rate_of_change(gr_set)
+            zcr[idx_set] = utils.compute_number_of_time_crossing_slope_line(gr_set)
             slope[idx_set] = utils.compute_slope(gr[idx_set])
             mean_unit[idx_set] = np.average(gr_set)
             variance_1[idx_set] = np.var(gr_set)

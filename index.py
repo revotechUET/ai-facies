@@ -28,7 +28,7 @@ def expert_rule():
     try:
         data = request.get_json()
 
-        for item in ["GR", "MUD_VOLUME", "TVD", "Boundary_flag"]:
+        for item in ["GR", "MUD_VOLUME", "TVD", "Boundary_flag", "Depth"]:
             if not data or item not in data.keys():
                 return parse_response("Field Missing", False, 400)
 

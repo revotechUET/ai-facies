@@ -1,6 +1,6 @@
 import numpy as np
 from .utils import compute_number_of_changing_direction_time
-from .utils import compute_rate_of_change
+from .utils import compute_number_of_time_crossing_slope_line
 
 
 class UnitBreaker(object):
@@ -301,9 +301,9 @@ class UnitBreaker(object):
         return lithofacies
 
     @staticmethod
-    def label_shape_code(gr, boundary_flags, tvd, lithofacies, variance,
+    def label_shape_code(gr, boundary_flags, tvd, md, lithofacies, variance,
                          gr_threshold=8, gr_avg_threshold=6, tvd_threshold=2,
-                         roc_threshold=0.2, variance_threshold=25, change_sign_threshold=1.5,
+                         roc_threshold=2, variance_threshold=25, change_sign_threshold=1.5,
                          *args, **kwagrs):
         """Labeling shape of gr curve of each units.
 
@@ -317,6 +317,9 @@ class UnitBreaker(object):
 
         tvd : 1D numpy array, shape (n_samples,)
           The input tv depth.
+
+        md  : 1D numpy array, shape (n_samples,)
+           The input depth
 
         lithofacies : 1D numpy array, shape (n_samples,)
           Lithofacy of units, samples in the same unit have same lithofacy. Lithofacy is in [1, 2, 3, 4].
@@ -354,18 +357,21 @@ class UnitBreaker(object):
         labels = np.zeros(n_samples).astype(np.int8)
         gr_set = []
         idx_set = []
+        sample_rate = (md[-1] - md[0]) / md.shape[0]
+        const_distance = 0.3
+        n_selected_sample = int(round(const_distance / sample_rate) + 1)
 
         for i in range(n_samples):
             idx_set.append(i)
             if boundary_flags[i] != 0 or i == n_samples - 1:
                 if lithofacies[i] != 4:
                     gr_set = gr[idx_set].copy()
-                    avg_first = np.average(gr_set[:3])
-                    max_first = np.amax(gr_set[:3])
-                    min_first = np.amin(gr_set[:3])
-                    avg_last = np.average(gr_set[-3:])
-                    max_last = np.amax(gr_set[-3:])
-                    min_last = np.amin(gr_set[-3:])
+                    avg_first = np.average(gr_set[:n_selected_sample])
+                    max_first = np.amax(gr_set[:n_selected_sample])
+                    min_first = np.amin(gr_set[:n_selected_sample])
+                    avg_last = np.average(gr_set[-n_selected_sample:])
+                    max_last = np.amax(gr_set[-n_selected_sample:])
+                    min_last = np.amin(gr_set[-n_selected_sample:])
                     delta_max_first_min_last = max_first - min_last
                     delta_min_first_max_last = min_first - max_last
                     delta_avg = avg_first - avg_last
@@ -380,7 +386,9 @@ class UnitBreaker(object):
                     else:
                         if compute_number_of_changing_direction_time(gr_set) / thickness > change_sign_threshold \
                                 and variance[idx_set[0]] > variance_threshold \
-                                and lithofacies[i] != 1 and compute_rate_of_change(gr_set) > roc_threshold:
+                                and lithofacies[i] != 1 and \
+                                compute_number_of_time_crossing_slope_line(gr_set) / thickness > roc_threshold:
+
                             labels[idx_set] = 3
                         elif delta_max_first_min_last > gr_threshold and abs(delta_avg) > gr_avg_threshold:
                             labels[idx_set] = 1

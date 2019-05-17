@@ -13,8 +13,9 @@ from copy import deepcopy
 
 
 def expert_rule(input_data):
+    # sanitizing input
     pop_history = []
-    required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME"]
+    required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME", "Depth"]
     index = 0
     while index < len(input_data["Boundary_flag"]):
         for item in required:
@@ -31,6 +32,27 @@ def expert_rule(input_data):
 
     for key in input_data.keys():
         input_data.update({key: array(input_data[key])})
+
+    optional = ["Biostratigraphy", "Lateral_proximity", "Special_lithology", "Core_depofacies", "Reliability"]
+
+    for item in optional:
+        if item not in input_data.keys() or len(input_data[item]) == 0:
+            input_data.update({item: [utils_func.UNDEFINED] * len(input_data["TVD"])});
+
+        else:
+            for i in range(len(input_data[item])):
+                if not input_data[item][i] or math.isnan(input_data[item][i]):
+                    input_data[item][i] = utils_func.UNDEFINED
+
+    for i in range(len(input_data["Reliability"])):
+        if (input_data["Reliability"][i] is None or math.isnan(input_data["Reliability"][i]) or
+            input_data["Reliability"][
+                i] == utils_func.UNDEFINED or input_data["Reliability"][i] in utils_func.CLIENT_UNDEFINED) and \
+                (input_data["Biostratigraphy"][i] != utils_func.UNDEFINED and input_data["Biostratigraphy"][
+                    i] not in utils_func.CLIENT_UNDEFINED):
+            input_data["Reliability"][i] = 2
+
+    # end sanitizing input
 
     print("Execution breakdown\n")
     start = time.time()
