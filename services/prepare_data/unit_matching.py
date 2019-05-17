@@ -70,11 +70,7 @@ def detect_label_shape_code(gr, v_mud, tvd, md):
     labels = UnitBreaker().label_shape_code(gr=gr, boundary_flags=boundary_flags, tvd=tvd, md=md, lithofacies=lithofacies,
                                             variance=variance_2, gr_threshold=8, gr_avg_threshold=6,
                                             tvd_threshold=2,
-<<<<<<< HEAD
-                                            roc_threshold=0.25, variance_threshold=40, change_sign_threshold=3)
-=======
                                             roc_threshold=0.25, variance_threshold=40, change_sign_threshold=2)
->>>>>>> master
     return labels
 
 
