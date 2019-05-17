@@ -28,11 +28,16 @@ class UnitBreaker(object):
         diff = np.diff(x, axis=0)
         n_samples = len(x)
         point_flags = np.zeros(n_samples)
-
+        start = 0
         increase = False
-        if diff[0] >= 0:
+
+        while diff[start] == 0:
+            start += 1
+
+        if diff[start] >= 0:
             increase = True
-        for i in range(1, n_samples - 1):
+
+        for i in range(start + 1, n_samples - 1):
             if diff[i] * diff[i - 1] < 0:
                 if abs(diff[i]) > epsilon or abs(diff[i - 1]) > epsilon:
                     if increase:
