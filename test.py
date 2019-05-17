@@ -13,22 +13,23 @@ class MyTest(unittest.TestCase):
         gr = data.GR.values
         tvd = data.TVD.values
 
+        print(gr[0])
+
         data = {
             "GR": list(gr),
             "TVD": list(tvd)
         }
 
         headers = {'content-type': 'application/json'}
-        url = 'http://127.0.0.1:9999/api/v1/unit-breakdown'
+        url = 'https://ai-facies.i2g.cloud/api/v1/unit-breakdown'
 
-        res = requests.post(url, data=json.dumps(data), headers=headers)
+        res = requests.post(url, data=json.dumps(data), headers=headers, verify=False)
 
         data = json.loads(res.text)
 
         df = pd.DataFrame(data["content"], columns=["Boundary_flag"])
         df.to_csv("./csv/debug_ub1.csv", index=False)
 
-        print(data)
 
     # def test_expert_rule(self):
     #     initial_data = pd.read_csv("csv/initial_data.csv")

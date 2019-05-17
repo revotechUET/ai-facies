@@ -27,6 +27,7 @@ POST /api/v1/expert-rule
     Input: JSON Object
 
         {
+	    Depth: [],
             GR: [],
             TVD: [],
             MUD_VOLUME: [],
