@@ -300,8 +300,11 @@ def convert_sample_by_sample(data, initial_data):
         for key in data[row["Unit_index"]].keys():
             if key in OUTPUT_NUMPY_FORMAT or key in ["Unit_index"]:
                 row.update({key: int(data[row["Unit_index"]][key])})
+            elif key in OUTPUT:
+                row.update({key: data[row["Unit_index"]][key]})
             elif key == "Boundary_flag":
                 row.update({key: int(row[key])})
+
         final.append(row)
     return final
 
