@@ -27,7 +27,7 @@ POST /api/v1/expert-rule
     Input: JSON Object
 
         {
-	    Depth: [],
+	        Depth: [],
             GR: [],
             TVD: [],
             MUD_VOLUME: [],
@@ -36,7 +36,8 @@ POST /api/v1/expert-rule
             Lateral_proximity: [] (optional) ,
             Special_lithology: [] (optional) ,
             Core_depofacies: [] (optional) ,
-            Reliability: [] (optional)
+            Reliability: [] (optional),
+            ML: [] (optional)
 
         }
 

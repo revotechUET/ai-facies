@@ -1,12 +1,13 @@
 from .prepare_data.prepare_data import prepare_data, unit_breakdown as ub
 from .initial_point.main import init_point
+from .machine_learning import ml
 from .similar_unit.similar_unit import similar_unit
 from .special_lithology.special_lithology import special_lithology
 from .modifier_set1.modifier_set1 import modifier_set1
 from .modifier_set2.modifier_set2 import modifier_set2
 from .utilities import utils_func
+from .prepare_data.core.units import UnitBreaker
 from numpy import array
-import math
 
 import time
 from copy import deepcopy
@@ -14,42 +15,32 @@ from copy import deepcopy
 
 def expert_rule(input_data):
     # sanitizing input
-    pop_history = []
-    required = ["Boundary_flag", "TVD", "GR", "MUD_VOLUME", "Depth"]
-    index = 0
-    while index < len(input_data["Boundary_flag"]):
-        for item in required:
-            if input_data[item][index] is None or (
-                    input_data[item][index] in utils_func.CLIENT_UNDEFINED) or math.isnan(input_data[item][index]) or \
-                    input_data[item][index] == utils_func.UNDEFINED:
-                for key in input_data.keys():
-                    if len(input_data[key]) > 0:
-                        input_data[key].pop(index)
-                pop_history.append(index + len(pop_history))
-                index -= 1
-                break
-        index += 1
 
+    for item in input_data["Boundary_flag"]:
+        print(item)
+
+    # Convert to numpy format
     for key in input_data.keys():
         input_data.update({key: array(input_data[key])})
 
-    optional = ["Biostratigraphy", "Lateral_proximity", "Special_lithology", "Core_depofacies", "Reliability"]
+    # Fill null values for optional field
+    optional = ["ML", "Biostratigraphy", "Lateral_proximity", "Special_lithology", "Core_depofacies", "Reliability"]
 
     for item in optional:
         if item not in input_data.keys() or len(input_data[item]) == 0:
-            input_data.update({item: [utils_func.UNDEFINED] * len(input_data["TVD"])});
+            input_data.update({item: [utils_func.UNDEFINED] * len(input_data["TVD"])})
 
-        else:
-            for i in range(len(input_data[item])):
-                if not input_data[item][i] or math.isnan(input_data[item][i]):
-                    input_data[item][i] = utils_func.UNDEFINED
+    # Fill null values for required field
+    required = ["TVD", "GR", "MUD_VOLUME", "Depth"]
 
+    for key in required:
+        data, _ = UnitBreaker.fill_null_values(input_data[key])
+        input_data.update({key: data})
+
+    # Fill default reliability = 2
     for i in range(len(input_data["Reliability"])):
-        if (input_data["Reliability"][i] is None or math.isnan(input_data["Reliability"][i]) or
-            input_data["Reliability"][
-                i] == utils_func.UNDEFINED or input_data["Reliability"][i] in utils_func.CLIENT_UNDEFINED) and \
-                (input_data["Biostratigraphy"][i] != utils_func.UNDEFINED and input_data["Biostratigraphy"][
-                    i] not in utils_func.CLIENT_UNDEFINED):
+        if input_data["Reliability"][i] == utils_func.UNDEFINED and \
+                input_data["Biostratigraphy"][i] != utils_func.UNDEFINED:
             input_data["Reliability"][i] = 2
 
     # end sanitizing input
@@ -80,6 +71,11 @@ def expert_rule(input_data):
     special_lithology(data)
     end = time.time()
     print(f"special_lithology execution time: {round(end - start, 2)}s\n")
+
+    start = time.time()
+    ml.machine_learning(data)
+    end = time.time()
+    print(f"machine_learning execution time: {round(end - start, 2)}s\n")
 
     additional_point = 10
     for row in data:
@@ -112,50 +108,25 @@ def expert_rule(input_data):
     output_curves = utils_func.OUTPUT + utils_func.OUTPUT_NUMPY_FORMAT
     output_curves.append("Boundary_flag")
 
+    tmp = []
     for key in output_curves:
-        tmp = []
         for row in final:
             tmp.append(row[key])
-        for idx in pop_history:
-            tmp.insert(idx, "")
-
         output.update({key: deepcopy(tmp)})
         tmp.clear()
 
     return output
 
 
-def filter_null(item):
-    if item == "null" or not item:
-        return False
-    return True
-
-
 def unit_breakdown(gr, tvd):
-    i = 0
-    pop_history = []
-
-    while i < len(gr):
-        if gr[i] == "null" or gr[i] == "NaN" or not gr[i]:
-            gr.pop(i)
-            tvd.pop(i)
-            pop_history.append(i + len(pop_history))
-            i -= 1
-        elif tvd[i] == "null" or not tvd[i]:
-            tvd.pop(i)
-            gr.pop(i)
-            pop_history.append(i + len(pop_history))
-            i -= 1
-        i += 1
-
     gr = array(gr)
     tvd = array(tvd)
+
+    gr, _ = UnitBreaker.fill_null_values(gr)
+    tvd, _ = UnitBreaker.fill_null_values(tvd)
 
     lst = ub(gr, tvd)
 
     lst = list(lst)
-
-    for ind in pop_history:
-        lst.insert(ind, "null")
 
     return lst

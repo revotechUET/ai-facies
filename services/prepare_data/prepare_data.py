@@ -21,7 +21,6 @@ def prepare_data(data):
 
     unit_index = detect_unit_index(boundary)
     unit_thick = detect_unit_length(boundary, tvd)
-
     number_of_similar_units_50, similar_units_50 = find_similar_unit(gr, tvd, boundary, lithofacies, shape_code,
                                                                      unit_thick, unit_index, 50, 0)
 

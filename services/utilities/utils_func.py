@@ -106,7 +106,6 @@ OUTPUT_NUMPY_FORMAT = [
 
 OUTPUT.extend(NAMES)
 
-
 GROUPS = [
     "Fluvial",
     "Shallow_Lacustrine",
@@ -116,9 +115,7 @@ GROUPS = [
     "Deep_Marine"
 ]
 
-UNDEFINED = -9999
-
-CLIENT_UNDEFINED = ["NaN", "null"]
+UNDEFINED = -1
 
 
 def convert_name_to_number(data):
@@ -296,7 +293,6 @@ def convert_data(data):
 def convert_sample_by_sample(data, initial_data):
     final = []
     for row in initial_data:
-        tmp = {}
         for key in data[row["Unit_index"]].keys():
             if key in OUTPUT_NUMPY_FORMAT or key in ["Unit_index"]:
                 row.update({key: int(data[row["Unit_index"]][key])})
@@ -324,7 +320,7 @@ def export_to_csv(data, filename):
 
 def pick_most(data):
     if len(data) == 0:
-        return None
+        return UNDEFINED
     return sorted(data, key=Counter(data).get, reverse=True)[0]
 
 
@@ -338,6 +334,7 @@ def simplify_data(data):
     reliabilities = []
     laterals = []
     special_lithologies = []
+    mls = []
 
     simplified_data = []
 
@@ -345,29 +342,28 @@ def simplify_data(data):
         if row["Core_depofacies"] != UNDEFINED:
             core_depofacies.append(row["Core_depofacies"])
 
-        if int(row["Reliability"]) != UNDEFINED:
+        if row["Reliability"] != UNDEFINED:
             reliabilities.append(row["Reliability"])
 
-        if int(row["Biostratigraphy"]) != UNDEFINED:
+        if row["Biostratigraphy"] != UNDEFINED:
             biostrats.append(row["Biostratigraphy"])
 
-        if int(row["Special_lithology"]) != UNDEFINED:
+        if row["Special_lithology"] != UNDEFINED:
             special_lithologies.append(row["Special_lithology"])
 
-        if int(row["Lateral_proximity"]) != UNDEFINED:
+        if row["Lateral_proximity"] != UNDEFINED:
             laterals.append(row["Lateral_proximity"])
 
-        if int(row["Boundary_flag"]) == 1:
+        if row["ML"] != UNDEFINED:
+            mls.append(row["ML"])
+
+        if row["Boundary_flag"] == 1:
             depo = pick_most(core_depofacies)
             biostrat = pick_most(biostrats)
             reliability = pick_most(reliabilities)
             lateral = pick_most(laterals)
             lithos = remove_duplicate(deepcopy(special_lithologies))
-
-            depo = depo if depo else UNDEFINED
-            biostrat = biostrat if biostrat else UNDEFINED
-            reliability = reliability if reliability else UNDEFINED
-            lateral = lateral if lateral else UNDEFINED
+            ml = pick_most(mls)
 
             row.update({"Special_lithology": lithos})
 
@@ -379,6 +375,8 @@ def simplify_data(data):
 
             row.update({"Lateral_proximity": lateral})
 
+            row.update({"ML": ml})
+
             simplified_data.append(deepcopy(row))
 
             core_depofacies.clear()
@@ -386,5 +384,6 @@ def simplify_data(data):
             biostrats.clear()
             laterals.clear()
             reliabilities.clear()
+            mls.clear()
 
     return simplified_data

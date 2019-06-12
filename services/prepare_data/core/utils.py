@@ -7,9 +7,9 @@ def compute_number_of_changing_direction_time(arr):
     upward = True
     count = 0
     i = 0
-    while diff[i] == 0 and i < n_samples:
+    while i < n_samples and diff[i] == 0:
         i += 1
-    if diff[i] < 0 and i < n_samples:
+    if i < n_samples and diff[i] < 0:
         upward = False
     for j in range(i + 1, n_samples):
         if (upward and diff[j] < 0) or ((not upward) and diff[j] > 0):

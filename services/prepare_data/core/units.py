@@ -1,9 +1,52 @@
 import numpy as np
+import pandas as pd
 from .utils import compute_number_of_changing_direction_time
 from .utils import compute_number_of_time_crossing_slope_line
 
 
 class UnitBreaker(object):
+    @staticmethod
+    def fill_null_values(x, method='linear'):
+        """Filling null values in the array.
+          Parameters
+          ----------
+          x : 1D numpy array, shape (n_samples,)
+            The input array.
+          method : str, default ‘linear’
+            Interpolation technique to use. See pandas.Series.interpolate for more information.
+          Returns
+          -------
+          x_filled : 1D numpy array, shape (n_samples,)
+            The array after being filled.
+          null_value_flags : 1D numpy array, shape (n_samples,)
+            The array saving position of null values, where 1 is null value.
+
+          """
+        n_samples = x.shape[0]
+        x = np.array(x, dtype='float64')
+        x[x < 0] = np.nan
+        null_value_flags = np.zeros(n_samples)
+        null_value_flags[np.isnan(x)] = 1
+
+        i = 0
+        idx_set = []
+        while np.isnan(x[i]):
+            idx_set.append(i)
+            i += 1
+        x[idx_set] = x[i]
+
+        i = n_samples - 1
+        idx_set = []
+        while np.isnan(x[i]):
+            idx_set.append(i)
+            i -= 1
+        x[idx_set] = x[i]
+
+        s = pd.Series(x)
+        s = pd.to_numeric(s)
+        s = s.interpolate(method=method)
+        return s.values, null_value_flags
+
     @staticmethod
     def detect_changing_direction_point(x, epsilon=0.02, multiplier=2, *args, **kwargs):
         """Detecting changing direction points in the signal.
@@ -367,8 +410,10 @@ class UnitBreaker(object):
         n_selected_sample = int(round(const_distance / sample_rate) + 1)
 
         for i in range(n_samples):
+
             idx_set.append(i)
             if boundary_flags[i] != 0 or i == n_samples - 1:
+
                 if lithofacies[i] != 4:
                     gr_set = gr[idx_set].copy()
                     avg_first = np.average(gr_set[:n_selected_sample])
@@ -382,6 +427,7 @@ class UnitBreaker(object):
                     delta_avg = avg_first - avg_last
                     thickness = tvd[idx_set[-1]] - tvd[idx_set[0]]
                     if thickness < tvd_threshold:
+
                         if delta_max_first_min_last > gr_threshold and abs(delta_avg) > gr_avg_threshold:
                             labels[idx_set] = 1
                         elif delta_min_first_max_last < -gr_threshold and abs(delta_avg) > gr_avg_threshold:
@@ -395,16 +441,20 @@ class UnitBreaker(object):
                                 compute_number_of_time_crossing_slope_line(gr_set) / thickness > roc_threshold:
 
                             labels[idx_set] = 3
+
                         elif delta_max_first_min_last > gr_threshold and abs(delta_avg) > gr_avg_threshold:
                             labels[idx_set] = 1
+
                         elif delta_min_first_max_last < -gr_threshold and abs(delta_avg) > gr_avg_threshold:
                             labels[idx_set] = 4
+
                         else:
                             labels[idx_set] = 2
                 else:
                     labels[idx_set] = 5
                 idx_set = []
                 gr_set = []
+
         return labels
 
     @staticmethod
